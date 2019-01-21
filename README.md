@@ -1,2 +1,3 @@
 # px4_msgs
-ROS messages that match the uORB messages counterparts under PX4 Firmware
+
+Package that generates the ROS2 messages and interfaces to be used by `px4_ros_com`.
