@@ -19,11 +19,11 @@ find_package(rosidl_default_generators REQUIRED)
 ##############################################
 
 # get all msg files
-file(GLOB PX4_MSGS "${CMAKE_CURRENT_SOURCE_DIR}/msg/*.msg")
+file(GLOB PX4_MSGS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/msg/*.msg")
 
 if(NOT "${PX4_MSGS}" STREQUAL "")
   # Generate introspection typesupport for C and C++
-  rosidl_generate_interfaces(${PROJECT_NAME} ${ROS_UORB_MSGS})
+  rosidl_generate_interfaces(${PROJECT_NAME} ${PX4_MSGS})
 else()
   message(FATAL_ERROR "No PX4 msgs found to generate interfaces to!")
 endif()
