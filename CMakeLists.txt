@@ -19,7 +19,7 @@ find_package(rosidl_default_generators REQUIRED)
 ##############################################
 
 # get all msg files
-file(GLOB PX4_MSGS "*.msg")
+file(GLOB PX4_MSGS "${CMAKE_CURRENT_SOURCE_DIR}/msg/*.msg")
 
 if(NOT "${PX4_MSGS}" STREQUAL "")
   # Generate introspection typesupport for C and C++
