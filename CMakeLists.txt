@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.8.3)
 
 project(px4_msgs)
 
@@ -6,32 +6,48 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(EnableC++XX)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
-
-find_package(ament_cmake REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 
 ##############################################
 # Generate ROS messages and ROS2 interfaces ##
 ##############################################
 
 # get all msg files
-file(GLOB PX4_MSGS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/msg/*.msg")
+file(GLOB PX4_MSGS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/msg" "${CMAKE_CURRENT_SOURCE_DIR}/msg/*.msg")
 
 if(NOT "${PX4_MSGS}" STREQUAL "")
-  # Generate introspection typesupport for C and C++
-  rosidl_generate_interfaces(${PROJECT_NAME}
+  add_message_files(
+    DIRECTORY msg
+    FILES
     ${PX4_MSGS}
-    DEPENDENCIES builtin_interfaces
-    ADD_LINTER_TESTS
   )
 else()
   message(FATAL_ERROR "No PX4 msgs found to generate interfaces to!")
 endif()
 
-ament_export_dependencies(rosidl_default_runtime)
+## Generate added messages
+generate_messages()
 
-ament_package()
+###################################
+## catkin specific configuration ##
+###################################
+
+catkin_package(
+    CATKIN_DEPENDS message_runtime std_msgs
+)
+
+## Add include dirs
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+)
+
+#############
+## Testing ##
+#############
+
+if(CATKIN_ENABLE_TESTING)
+
+#TODO
+
+endif()
