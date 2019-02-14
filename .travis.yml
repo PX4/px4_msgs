@@ -16,7 +16,9 @@ matrix:
       cache:
       ccache: true
       env:
+        - ROS1_DISTRO=kinetic
         - ROS2_DISTRO=ardent
+        - ROS1_ENV=/opt/ros/${ROS1_DISTRO}/setup.bash
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-ardent:2019-01-25
     - name: Build on ROS2 Bouncy
@@ -27,7 +29,9 @@ matrix:
       cache:
       ccache: true
       env:
+        - ROS1_DISTRO=melodic
         - ROS2_DISTRO=bouncy
+        - ROS1_ENV=/opt/ros/${ROS1_DISTRO}/setup.bash
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-bouncy:2019-01-25
     - name: Build on ROS2 Crystal
@@ -38,10 +42,12 @@ matrix:
       cache:
       ccache: true
       env:
+        - ROS1_DISTRO=melodic
         - ROS2_DISTRO=crystal
+        - ROS1_ENV=/opt/ros/${ROS1_DISTRO}/setup.bash
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-crystal:2019-01-25
 
 script:
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker run -it --rm -w ${TRAVIS_BUILD_DIR} --env=CCACHE_DIR="${CCACHE_DIR}" --env=LOCAL_USER_ID="$(id -u)" --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw ${DOCKER_CONTAINER} /bin/bash -c "source ${ROS2_ENV}; ${COLCON_BUILD}"; fi
-  - if [ "$TRAVIS_BRANCH" = "ros1" ]; then docker run -it --rm -w ${TRAVIS_BUILD_DIR} --env=CCACHE_DIR="${CCACHE_DIR}" --env=LOCAL_USER_ID="$(id -u)" --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw ${DOCKER_CONTAINER} /bin/bash -c "${CATKIN_BUILD}"; fi
+  - if [ "$TRAVIS_BRANCH" = "ros1" ]; then docker run -it --rm -w ${TRAVIS_BUILD_DIR} --env=CCACHE_DIR="${CCACHE_DIR}" --env=LOCAL_USER_ID="$(id -u)" --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw ${DOCKER_CONTAINER} /bin/bash -c "source ${ROS1_ENV}; ${CATKIN_BUILD}"; fi
