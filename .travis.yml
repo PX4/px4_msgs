@@ -47,6 +47,19 @@ matrix:
         - ROS1_ENV=/opt/ros/${ROS1_DISTRO}/setup.bash
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-crystal:2019-06-27
+    - name: Build on ROS2 Dashing
+      os: linux
+      language: cpp
+      services:
+        - docker
+      cache:
+      ccache: true
+      env:
+        - ROS1_DISTRO=melodic
+        - ROS2_DISTRO=dashing
+        - ROS1_ENV=/opt/ros/${ROS1_DISTRO}/setup.bash
+        - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
+        - DOCKER_CONTAINER=px4io/px4-dev-ros2-dashing:2019-06-27
 
 script:
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker run -it --rm -w ${TRAVIS_BUILD_DIR} --env=CCACHE_DIR="${CCACHE_DIR}" --env=LOCAL_USER_ID="$(id -u)" --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw ${DOCKER_CONTAINER} /bin/bash -c "source ${ROS2_ENV}; ${COLCON_BUILD}"; fi
