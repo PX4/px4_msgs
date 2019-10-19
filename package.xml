@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>px4_msgs</name>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <description>Package with the ROS-equivalent of PX4 uORB msgs</description>
   <maintainer email="nuno.marques@dronesolutions.io">Nuno Marques</maintainer>
   <author email="nuno.marques@dronesolutions.io">Nuno Marques</author>
