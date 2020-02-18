@@ -1,10 +1,14 @@
 sudo: required
 
+# CI runs over all branches that do not contain 'ros1' in the name
+branches:
+  except:
+  - /.*ros1.*/
+
 env:
   global:
     - CCACHE_DIR=${HOME}/.ccache
-    - CATKIN_BUILD="mkdir -p ~/catkin_ws/src; cd ~/catkin_ws; ln -s ${TRAVIS_BUILD_DIR} src/px4_msgs; catkin build"
-    - COLCON_BUILD="mkdir -p ~/colcon_ws/src; cd ~/colcon_ws; ln -s ${TRAVIS_BUILD_DIR} src/px4_msgs; colcon build --cmake-args --symlink-install --event-handlers console_direct+"
+    - BUILD="mkdir -p ~/colcon_ws/src; cd ~/colcon_ws; ln -s ${TRAVIS_BUILD_DIR} src/px4_msgs; colcon build --cmake-args --symlink-install --event-handlers console_direct+"
 
 matrix:
   include:
@@ -54,5 +58,10 @@ matrix:
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-dashing:2020-02-11
 
 script:
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker run -it --rm -w ${TRAVIS_BUILD_DIR} --env=CCACHE_DIR="${CCACHE_DIR}" --env=LOCAL_USER_ID="$(id -u)" --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw ${DOCKER_CONTAINER} /bin/bash -c "source ${ROS2_ENV}; ${COLCON_BUILD}"; fi
-  - if [ "$TRAVIS_BRANCH" = "ros1" ]; then docker run -it --rm -w ${TRAVIS_BUILD_DIR} --env=CCACHE_DIR="${CCACHE_DIR}" --env=LOCAL_USER_ID="$(id -u)" --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw ${DOCKER_CONTAINER} /bin/bash -c "${CATKIN_BUILD}"; fi
+  - docker run -it --rm -w ${TRAVIS_BUILD_DIR}
+    --name=px4_ros2_container
+    --env=CCACHE_DIR="${CCACHE_DIR}"
+    --env=LOCAL_USER_ID="$(id -u)"
+    --volume=${CCACHE_DIR}:${CCACHE_DIR}:rw
+    --volume=${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR}:rw
+    ${DOCKER_CONTAINER} /bin/bash -ce "source ${ROS2_ENV}; ${BUILD}";
