@@ -22,7 +22,7 @@ matrix:
       env:
         - ROS_DISTRO=kinetic
         - ROS_ENV=/opt/ros/${ROS_DISTRO}/setup.bash
-        - DOCKER_CONTAINER=px4io/px4-dev-ros-kinetic:2020-02-11
+        - DOCKER_CONTAINER=px4io/px4-dev-ros-kinetic:2020-03-16
     - name: Build on ROS Melodic
       os: linux
       language: cpp
@@ -33,7 +33,7 @@ matrix:
       env:
         - ROS_DISTRO=melodic
         - ROS_ENV=/opt/ros/${ROS_DISTRO}/setup.bash
-        - DOCKER_CONTAINER=px4io/px4-dev-ros-melodic:2020-02-11
+        - DOCKER_CONTAINER=px4io/px4-dev-ros-melodic:2020-03-16
 
 script:
   - docker run -it --rm -w ${TRAVIS_BUILD_DIR}
