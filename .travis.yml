@@ -56,6 +56,17 @@ matrix:
         - ROS2_DISTRO=dashing
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-dashing:2020-03-16
+    - name: Build on ROS2 Eloquent
+      os: linux
+      language: cpp
+      services:
+        - docker
+      cache:
+      ccache: true
+      env:
+        - ROS2_DISTRO=eloquent
+        - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
+        - DOCKER_CONTAINER=px4io/px4-dev-ros2-eloquent:2020-03-16
 
 script:
   - docker run -it --rm -w ${TRAVIS_BUILD_DIR}
