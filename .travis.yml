@@ -45,6 +45,11 @@ matrix:
         - ROS2_DISTRO=eloquent
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-eloquent:2020-06-27
+    - name: Build on ROS2 Foxy
+      env:
+        - ROS2_DISTRO=foxy
+        - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
+        - DOCKER_CONTAINER=px4io/px4-dev-ros2-foxy:2020-06-27
 
 script:
   - docker run -it --rm -w ${TRAVIS_BUILD_DIR}
