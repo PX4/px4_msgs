@@ -1,5 +1,7 @@
 sudo: required
 
+os: linux
+
 # CI runs over all branches that do not contain 'ros1' in the name
 branches:
   except:
@@ -10,59 +12,35 @@ env:
     - CCACHE_DIR=${HOME}/.ccache
     - BUILD="mkdir -p ~/colcon_ws/src; cd ~/colcon_ws; ln -s ${TRAVIS_BUILD_DIR} src/px4_msgs; colcon build --cmake-args --symlink-install --event-handlers console_direct+"
 
+language: cpp
+
+cache: ccache
+
+services: docker
+
 matrix:
   include:
     - name: Build on ROS2 Ardent
-      os: linux
-      language: cpp
-      services:
-        - docker
-      cache:
-      ccache: true
       env:
         - ROS2_DISTRO=ardent
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-ardent:2020-06-27
     - name: Build on ROS2 Bouncy
-      os: linux
-      language: cpp
-      services:
-        - docker
-      cache:
-      ccache: true
       env:
         - ROS2_DISTRO=bouncy
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-bouncy:2020-06-27
     - name: Build on ROS2 Crystal
-      os: linux
-      language: cpp
-      services:
-        - docker
-      cache:
-      ccache: true
       env:
         - ROS2_DISTRO=crystal
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-crystal:2020-06-27
     - name: Build on ROS2 Dashing
-      os: linux
-      language: cpp
-      services:
-        - docker
-      cache:
-      ccache: true
       env:
         - ROS2_DISTRO=dashing
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
         - DOCKER_CONTAINER=px4io/px4-dev-ros2-dashing:2020-06-27
     - name: Build on ROS2 Eloquent
-      os: linux
-      language: cpp
-      services:
-        - docker
-      cache:
-      ccache: true
       env:
         - ROS2_DISTRO=eloquent
         - ROS2_ENV=/opt/ros/${ROS2_DISTRO}/setup.bash
