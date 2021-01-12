@@ -3,8 +3,9 @@ name: Build package
 # CI runs over all branches that do not contain 'ros1' in the name
 on:
   push:
-    branches-ignore:
-      - '**ros1**'
+    branches:
+      - 'master'
+      - 'ros2'
   pull_request:
     branches-ignore:
       - '**ros1**'
