@@ -1,6 +1,6 @@
 # px4_msgs
 
-[![GitHub license](https://img.shields.io/github/license/PX4/px4_msgs.svg)](https://github.com/PX4/px4_msg/blob/master/LICENSE) [![Build Status](https://travis-ci.org/PX4/px4_msgs.svg?branch=master)](https://travis-ci.org/PX4/px4_msgs)
+[![GitHub license](https://img.shields.io/github/license/PX4/px4_msgs.svg)](https://github.com/PX4/px4_msg/blob/master/LICENSE) [![Build package](https://github.com/PX4/px4_msgs/workflows/Build%20package/badge.svg)](https://github.com/PX4/px4_msgs/actions)
 
 This package contains the ROS2 message definitions of the [PX4 Pro ecosystem](https://px4.io/). Building this package generates all the required interfaces to interface ROS2 nodes with the PX4 autopilot internals, which use the [uORB messaging API](https://dev.px4.io/en/middleware/uorb.html). Currently the messages of this package represent a dependency to [`px4_ros_com` package](https://github.com/PX4/px4_ros_com).
 
