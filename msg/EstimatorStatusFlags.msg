@@ -40,7 +40,7 @@ bool fs_bad_mag_y             #  1 - true if the fusion of the magnetometer Y-ax
 bool fs_bad_mag_z             #  2 - true if the fusion of the magnetometer Z-axis has encountered a numerical error
 bool fs_bad_hdg               #  3 - true if the fusion of the heading angle has encountered a numerical error
 bool fs_bad_mag_decl          #  4 - true if the fusion of the magnetic declination has encountered a numerical error
-bool fs_bad_Airspeed          #  5 - true if fusion of the Airspeed has encountered a numerical error
+bool fs_bad_airspeed          #  5 - true if fusion of the airspeed has encountered a numerical error
 bool fs_bad_sideslip          #  6 - true if fusion of the synthetic sideslip constraint has encountered a numerical error
 bool fs_bad_optflow_x         #  7 - true if fusion of the optical flow X axis has encountered a numerical error
 bool fs_bad_optflow_y         #  8 - true if fusion of the optical flow Y axis has encountered a numerical error
@@ -65,7 +65,7 @@ bool reject_mag_x                         #  4 - true if the X magnetometer obse
 bool reject_mag_y                         #  5 - true if the Y magnetometer observation has been rejected
 bool reject_mag_z                         #  6 - true if the Z magnetometer observation has been rejected
 bool reject_yaw                           #  7 - true if the yaw observation has been rejected
-bool reject_Airspeed                      #  8 - true if the Airspeed observation has been rejected
+bool reject_airspeed                      #  8 - true if the airspeed observation has been rejected
 bool reject_sideslip                      #  9 - true if the synthetic sideslip observation has been rejected
 bool reject_hagl                          # 10 - true if the height above ground observation has been rejected
 bool reject_optflow_x                     # 11 - true if the X optical flow observation has been rejected
