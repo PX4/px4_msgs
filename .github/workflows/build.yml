@@ -21,7 +21,7 @@ jobs:
     container: px4io/px4-dev-ros2-${{ matrix.ros2_distro }}:2021-05-27
     strategy:
       matrix:
-        ros2_distro: [ardent, bouncy, crystal, dashing, eloquent, foxy, galactic, rolling]
+        ros2_distro: [dashing, eloquent, foxy, galactic, rolling]
     steps:
       - uses: actions/checkout@v2
       - name: build
