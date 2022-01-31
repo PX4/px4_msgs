@@ -62,3 +62,5 @@ float32 yawspeed		# Angular velocity about Z body axis
 # If angular velocity covariance invalid/unknown, 16th cell is NaN
 float32[21] velocity_covariance
 
+uint8 reset_counter
+
