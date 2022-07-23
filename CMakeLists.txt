@@ -22,8 +22,7 @@ else()
   set(ROS_DISTRO $ENV{ROS_DISTRO})
 endif()
 
-if(${ROS_DISTRO} MATCHES "ardent" OR ${ROS_DISTRO} MATCHES "bouncy" OR
-   ${ROS_DISTRO} MATCHES "crystal")
+if((${ROS_DISTRO} MATCHES "ardent") OR (${ROS_DISTRO} MATCHES "bouncy") OR (${ROS_DISTRO} MATCHES "crystal"))
   find_package(rosidl_generator_dds_idl REQUIRED)
 endif()
 
@@ -49,8 +48,7 @@ if(NOT "${PX4_MSGS}" STREQUAL "")
 
   # Generate Fast RTPS IDL files (previous to Dashing, so to make the IDL
   # compatible with the upstream PX4 IDL generator)
-  if(${ROS_DISTRO} MATCHES "ardent" OR ${ROS_DISTRO} MATCHES "bouncy" OR
-     ${ROS_DISTRO} MATCHES "crystal")
+  if((${ROS_DISTRO} MATCHES "ardent") OR (${ROS_DISTRO} MATCHES "bouncy") OR (${ROS_DISTRO} MATCHES "crystal"))
     rosidl_generate_dds_interfaces(${PROJECT_NAME}__fastrtps_idl
                                    IDL_FILES
                                    ${ROS_MSG_DIR_LIST}
