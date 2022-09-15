@@ -4,7 +4,7 @@ name: Build package
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'ros2'
   pull_request:
     branches-ignore:
