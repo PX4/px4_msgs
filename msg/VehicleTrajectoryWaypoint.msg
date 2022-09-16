@@ -18,3 +18,4 @@ uint8 NUMBER_POINTS = 5
 
 TrajectoryWaypoint[5] waypoints
 
+# TOPICS vehicle_trajectory_waypoint vehicle_trajectory_waypoint_desired

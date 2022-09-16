@@ -5,10 +5,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'ros2'
-  pull_request:
-    branches-ignore:
-      - '**ros1**'
 
 defaults:
   run:
@@ -21,7 +17,7 @@ jobs:
     container: px4io/px4-dev-ros2-${{ matrix.ros2_distro }}:2021-05-31
     strategy:
       matrix:
-        ros2_distro: [dashing, eloquent, foxy, galactic, rolling]
+        ros2_distro: [foxy, humble, rolling]
     steps:
       - uses: actions/checkout@v3
       - name: build

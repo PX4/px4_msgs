@@ -10,4 +10,3 @@ uint64 health_error_flags
 
 uint64 arming_check_warning_flags
 uint64 arming_check_error_flags
-

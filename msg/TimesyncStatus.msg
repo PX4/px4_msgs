@@ -1,8 +1,9 @@
 uint64 timestamp			# time since system start (microseconds)
 
-uint8 SOURCE_PROTOCOL_MAVLINK = 0
-uint8 SOURCE_PROTOCOL_RTPS = 1
-uint8 source_protocol			# timesync source. Source can be MAVLink or the microRTPS bridge
+uint8 SOURCE_PROTOCOL_UNKNOWN = 0
+uint8 SOURCE_PROTOCOL_MAVLINK = 1
+uint8 SOURCE_PROTOCOL_DDS     = 2
+uint8 source_protocol			# timesync source
 
 uint64 remote_timestamp			# remote system timestamp (microseconds)
 int64 observed_offset			# raw time offset directly observed from this timesync packet (microseconds)

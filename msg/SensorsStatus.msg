@@ -12,3 +12,4 @@ uint8[4] priority
 bool[4] enabled
 bool[4] external
 
+# TOPICS sensors_status_baro sensors_status_mag
