@@ -5,3 +5,4 @@ uint32 noutputs				# valid outputs
 float32[16] output				# output data, in natural output units
 
 # actuator_outputs_sim is used for SITL, HITL & SIH (with an output range of [-1, 1])
+# TOPICS actuator_outputs actuator_outputs_sim

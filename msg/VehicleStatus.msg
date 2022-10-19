@@ -33,8 +33,9 @@ uint8 ARM_DISARM_REASON_UNIT_TEST = 13
 
 uint64 nav_state_timestamp # time when current nav_state activated
 
-# Navigation state "what should vehicle do"
-uint8 nav_state
+uint8 nav_state_user_intention                  # Mode that the user selected (might be different from nav_state in a failsafe situation)
+
+uint8 nav_state                                 # Currently active mode
 uint8 NAVIGATION_STATE_MANUAL = 0               # Manual mode
 uint8 NAVIGATION_STATE_ALTCTL = 1               # Altitude control mode
 uint8 NAVIGATION_STATE_POSCTL = 2               # Position control mode
@@ -83,12 +84,11 @@ uint8 VEHICLE_TYPE_ROVER = 3
 uint8 VEHICLE_TYPE_AIRSHIP = 4
 
 bool failsafe # true if system is in failsafe state (e.g.:RTL, Hover, Terminate, ...)
-uint64 failsafe_timestamp # time when failsafe was activated
+bool failsafe_and_user_took_over # true if system is in failsafe state but the user took over control
 
 # Link loss
-bool rc_signal_lost              # true if RC reception lost
-bool data_link_lost              # datalink to GCS lost
-uint8 data_link_lost_counter     # counts unique data link lost events
+bool gcs_connection_lost              # datalink to GCS lost
+uint8 gcs_connection_lost_counter     # counts unique GCS connection lost events
 bool high_latency_data_link_lost # Set to true if the high latency data link (eg. RockBlock Iridium 9603 telemetry module) is lost
 
 # VTOL flags
@@ -97,9 +97,6 @@ bool is_vtol_tailsitter  # True if the system performs a 90° pitch down rotatio
 bool in_transition_mode  # True if VTOL is doing a transition
 bool in_transition_to_fw # True if VTOL is doing a transition from MC to FW
 
-bool mission_failure # Set to true if mission could not continue/finish
-bool geofence_violated
-
 # MAVLink identification
 uint8 system_type  # system type, contains mavlink MAV_TYPE
 uint8 system_id	   # system id, contains MAVLink's system ID field
@@ -107,7 +104,6 @@ uint8 component_id # subsystem / component id, contains MAVLink's component ID f
 
 bool safety_button_available # Set to true if a safety button is connected
 bool safety_off # Set to true if safety is off
-bool auto_mission_available
 
 bool power_input_valid                            # set if input power is valid
 bool usb_connected                                # set to true (never cleared) once telemetry received from usb link
@@ -120,3 +116,9 @@ bool parachute_system_healthy
 
 bool avoidance_system_required                    # Set to true if avoidance system is enabled via COM_OBS_AVOID parameter
 bool avoidance_system_valid                       # Status of the obstacle avoidance system
+
+bool rc_calibration_in_progress
+bool calibration_enabled
+
+bool pre_flight_checks_pass		# true if all checks necessary to arm pass
+

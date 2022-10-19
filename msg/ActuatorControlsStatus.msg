@@ -7,3 +7,4 @@ uint8 INDEX_THROTTLE = 3
 
 float32[4] control_power
 
+# TOPICS actuator_controls_status_0 actuator_controls_status_1

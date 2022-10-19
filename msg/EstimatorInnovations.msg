@@ -36,3 +36,4 @@ float32 hagl_rate	# height of ground rate innovation (m/s) and innovation varian
 # The innovation test ratios are scalar values. In case the field is a vector,
 # the test ratio will be put in the first component of the vector.
 
+# TOPICS estimator_innovations estimator_innovation_variances estimator_innovation_test_ratios
