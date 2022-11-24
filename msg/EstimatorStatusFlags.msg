@@ -9,7 +9,7 @@ bool cs_yaw_align             #  1 - true if the filter yaw alignment is complet
 bool cs_gps                   #  2 - true if GPS measurement fusion is intended
 bool cs_opt_flow              #  3 - true if optical flow measurements fusion is intended
 bool cs_mag_hdg               #  4 - true if a simple magnetic yaw heading fusion is intended
-bool cs_mag_3d                #  5 - true if 3-axis magnetometer measurement fusion is intended
+bool cs_mag_3d                #  5 - true if 3-axis magnetometer measurement fusion is inteded
 bool cs_mag_dec               #  6 - true if synthetic magnetic declination measurements fusion is intended
 bool cs_in_air                #  7 - true when the vehicle is airborne
 bool cs_wind                  #  8 - true when wind velocity is being estimated
@@ -36,8 +36,6 @@ bool cs_rng_fault             # 28 - true when the range finder has been declare
 bool cs_inertial_dead_reckoning # 29 - true if we are no longer fusing measurements that constrain horizontal velocity drift
 bool cs_wind_dead_reckoning     # 30 - true if we are navigationg reliant on wind relative measurements
 bool cs_rng_kin_consistent      # 31 - true when the range finder kinematic consistency check is passing
-bool cs_fake_pos                # 32 - true when fake position measurements are being fused
-bool cs_fake_hgt                # 33 - true when fake height measurements are being fused
 
 # fault status
 uint32 fault_status_changes   # number of filter fault status (fs) changes
@@ -67,6 +65,9 @@ bool reject_hor_vel                       #  0 - true if horizontal velocity obs
 bool reject_ver_vel                       #  1 - true if vertical velocity observations have been rejected
 bool reject_hor_pos                       #  2 - true if horizontal position observations have been rejected
 bool reject_ver_pos                       #  3 - true if vertical position observations have been rejected
+bool reject_mag_x                         #  4 - true if the X magnetometer observation has been rejected
+bool reject_mag_y                         #  5 - true if the Y magnetometer observation has been rejected
+bool reject_mag_z                         #  6 - true if the Z magnetometer observation has been rejected
 bool reject_yaw                           #  7 - true if the yaw observation has been rejected
 bool reject_airspeed                      #  8 - true if the airspeed observation has been rejected
 bool reject_sideslip                      #  9 - true if the synthetic sideslip observation has been rejected
