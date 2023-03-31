@@ -11,19 +11,30 @@ defaults:
     shell: bash
 
 jobs:
-  build:
-    name: "Build"
+  focal:
+    name: "Build on Ubuntu Focal"
     runs-on: ubuntu-20.04
-    container: px4io/px4-dev-ros2-${{ matrix.ros2_distro }}:2021-05-31
-    strategy:
-      matrix:
-        ros2_distro: [foxy, humble, rolling]
     steps:
       - uses: actions/checkout@v3
-      - name: build
-        run: |
-          source /opt/ros/${{ matrix.ros2_distro }}/setup.bash
-          mkdir -p ~/colcon_ws/src
-          cd ~/colcon_ws
-          ln -s ${GITHUB_WORKSPACE} src/px4_msgs
-          colcon build --cmake-args --symlink-install --event-handlers console_direct+
+      - uses: ros-tooling/setup-ros@v0.6
+        with:
+          required-ros-distributions: foxy
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: px4_msgs
+          target-ros2-distro: foxy
+  jammy:
+    name: "Build on Ubuntu Jammy"
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        ros2_distro: [humble, rolling]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ros-tooling/setup-ros@v0.6
+        with:
+          required-ros-distributions: ${{ matrix.ros2_distro }}
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: px4_msgs
+          target-ros2-distro: ${{ matrix.ros2_distro }}
