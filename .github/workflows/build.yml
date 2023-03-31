@@ -3,8 +3,8 @@ name: Build package
 # CI runs over all branches that do not contain 'ros1' in the name
 on:
   push:
-    branches:
-      - 'main'
+  schedule:
+    - cron: '0 0 * * *'
 
 defaults:
   run:
