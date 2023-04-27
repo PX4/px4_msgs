@@ -1,2 +1,4 @@
 build/
 msg/idl.cc
+
+.obj-*
