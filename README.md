@@ -2,6 +2,8 @@
 
 [![GitHub license](https://img.shields.io/github/license/PX4/px4_msgs.svg)](https://github.com/PX4/px4_msg/blob/master/LICENSE) [![Build package](https://github.com/PX4/px4_msgs/workflows/Build%20package/badge.svg)](https://github.com/PX4/px4_msgs/actions)
 
+[![Discord Shield](https://discordapp.com/api/guilds/1022170275984457759/widget.png?style=shield)](https://discord.gg/dronecode)
+
 ROS 2 message definitions for the [PX4 Autopilot](https://px4.io/) project.
 
 Building this package generates all the required interfaces to interface ROS 2 nodes with the PX4 internals.
@@ -12,13 +14,13 @@ Depending on the PX4 and ROS versions you want to use, you need to checkout the 
 
 | PX4 version   | ROS 2 versions          | branch                                                            |
 |---------------|-------------------------|-------------------------------------------------------------------|
-| 1.13          | Foxy                    | [release/1.13](https://github.com/PX4/px4_msgs/tree/release/1.13) |
-| 1.14          | Foxy - Humble - Rolling | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
-| `main` branch | Foxy - Humble - Rolling | [main](https://github.com/PX4/px4_msgs)                           |
+| 1.13          | Foxy (Ubuntu 20.04)                    | [release/1.13](https://github.com/PX4/px4_msgs/tree/release/1.13) |
+| 1.14          | Foxy (Ubuntu 20.04) - Humble (Ubuntu 22.04) - Rolling (Ubuntu 22.04) | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
+| `main` branch | Foxy (Ubuntu 20.04) - Humble (Ubuntu 22.04) - Rolling (Ubuntu 22.04) | [main](https://github.com/PX4/px4_msgs)                           |
 
 ### Messages Sync from PX4
 
-When PX4 message definitions in the `main` branch of [PX4 Autopilot](https://github.com/PX4/Autopilot) change, a CI/CD pipeline automatically copies and pushes updated ROS message definitions to this repository. This ensures that this repository `main` branch and the PX4-Autopilot `main` branch are always up to date.
+When PX4 message definitions in the `main` branch of [PX4 Autopilot](https://github.com/PX4/Autopilot) change, a [CI/CD pipeline](https://github.com/PX4/PX4-Autopilot/blob/main/.github/workflows/metadata.yml#L119) automatically copies and pushes updated ROS message definitions to this repository. This ensures that this repository `main` branch and the PX4-Autopilot `main` branch are always up to date.
 However, if you are using a custom PX4 version and you modified existing messages or created new one, then you have to manually synchronize them in this repository:
 ### Manual Message Sync
 
@@ -39,5 +41,5 @@ Use the [Issues](https://github.com/PX4/px4_msgs/issues) section to create a new
 
 ## Questions and troubleshooting
 
-Reach the PX4 development team on the PX4 Discord Server:
-[![Discord Shield](https://discordapp.com/api/guilds/1022170275984457759/widget.png?style=shield)](https://discord.gg/dronecode)
+Reach the PX4 development team on the [PX4 Discord Server](https://discord.gg/dronecode).
+
