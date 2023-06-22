@@ -2,7 +2,9 @@
 
 [![GitHub license](https://img.shields.io/github/license/PX4/px4_msgs.svg)](https://github.com/PX4/px4_msg/blob/master/LICENSE) [![Build package](https://github.com/PX4/px4_msgs/workflows/Build%20package/badge.svg)](https://github.com/PX4/px4_msgs/actions)
 
-This interface package contains the ROS 2 message definitions of the [PX4 Pro ecosystem](https://px4.io/). Building this package generates all the required interfaces to interface ROS 2 nodes with the PX4 autopilot internals.
+ROS 2 message definitions for the [PX4 Autopilot](https://px4.io/) project.
+
+Building this package generates all the required interfaces to interface ROS 2 nodes with the PX4 internals.
 
 ## Supported versions and compatibility
 
@@ -14,10 +16,11 @@ Depending on the PX4 and ROS versions you want to use, you need to checkout the 
 | 1.14          | Foxy - Humble - Rolling | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
 | `main` branch | Foxy - Humble - Rolling | [main](https://github.com/PX4/px4_msgs)                           |
 
-### Manual messages synchronization
+### Messages Sync from PX4
 
 When PX4 message definitions in the `main` branch of [PX4 Autopilot](https://github.com/PX4/Autopilot) change, a CI/CD pipeline automatically copies and pushes updated ROS message definitions to this repository. This ensures that this repository `main` branch and the PX4-Autopilot `main` branch are always up to date.
 However, if you are using a custom PX4 version and you modified existing messages or created new one, then you have to manually synchronize them in this repository:
+### Manual Message Sync
 
 - Checkout the correct branch associated to the PX4 version from which you detached you custom version.
 - Delete all `*.msg` files in `msg/` and copy all `*.msg` files from `PX4-Autopilot/msg/` in it. Assuming that this repository and the PX4-Autopilot repository are placed in your home folder, you can run:
