@@ -12,11 +12,15 @@ Building this package generates all the required interfaces to interface ROS 2 n
 
 Depending on the PX4 and ROS versions you want to use, you need to checkout the appropriate branch of this package:
 
-| PX4 version   | ROS 2 versions          | branch                                                            |
-|---------------|-------------------------|-------------------------------------------------------------------|
-| 1.13          | Foxy (Ubuntu 20.04)                    | [release/1.13](https://github.com/PX4/px4_msgs/tree/release/1.13) |
-| 1.14          | Foxy (Ubuntu 20.04) - Humble (Ubuntu 22.04) - Rolling (Ubuntu 22.04) | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
-| `main` branch | Foxy (Ubuntu 20.04) - Humble (Ubuntu 22.04) - Rolling (Ubuntu 22.04) | [main](https://github.com/PX4/px4_msgs)                           |
+| PX4            | ROS 2   | Ubuntu       | branch                                                            |
+|----------------|---------|--------------|-------------------------------------------------------------------|
+| [v1.13](https://github.com/PX4/px4_msgs/tree/release/1.13)           | Foxy    | Ubuntu 20.04 | [release/1.13](https://github.com/PX4/px4_msgs/tree/release/1.13) |
+| [v1.14](https://github.com/PX4/px4_msgs/tree/release/1.14)           | Foxy    | Ubuntu 20.04 | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
+| [v1.14](https://github.com/PX4/px4_msgs/tree/release/1.14)           | Humble  | Ubuntu 22.04 | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
+| [v1.14](https://github.com/PX4/px4_msgs/tree/release/1.14)           | Rolling | Ubuntu 22.04 | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
+| [main](https://github.com/PX4/px4_msgs/tree/main)                    | Foxy    | Ubuntu 22.04 | [main](https://github.com/PX4/px4_msgs)                           |
+| [main](https://github.com/PX4/px4_msgs/tree/main)                    | Humble  | Ubuntu 22.04 | [main](https://github.com/PX4/px4_msgs)                           |
+| [main](https://github.com/PX4/px4_msgs/tree/main)                    | Rolling | Ubuntu 22.04 | [main](https://github.com/PX4/px4_msgs)                           |
 
 ### Messages Sync from PX4
 
