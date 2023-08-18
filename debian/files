@@ -1,4 +1,6 @@
 ros-foxy-clearbot-px4-msgs-dbgsym_2.0.1-0focal_amd64.ddeb debug optional automatic=yes
+ros-foxy-clearbot-px4-msgs-dbgsym_2.0.1-0focal_arm64.ddeb debug optional automatic=yes
 ros-foxy-clearbot-px4-msgs_2.0.1-0focal_amd64.deb misc optional
+ros-foxy-clearbot-px4-msgs_2.0.1-0focal_arm64.deb misc optional
 ros-foxy-px4-msgs-dbgsym_2.0.1-0focal_amd64.ddeb debug optional automatic=yes
 ros-foxy-px4-msgs_2.0.1-0focal_amd64.deb misc optional
