@@ -1,15 +1,17 @@
-# Trajectory setpoint in NED frame
-# Input to PID position controller.
-# Needs to be kinematically consistent and feasible for smooth flight.
-# setting a value to NaN means the state should not be controlled
+# Local position setpoint in NED frame
+# setting something to NaN means the state should not be controlled
 
-uint64 timestamp # time since system start (microseconds)
+uint64 timestamp	# time since system start (microseconds)
 
-# NED local world frame
-float32[3] position # in meters
-float32[3] velocity # in meters/second
-float32[3] acceleration # in meters/second^2
-float32[3] jerk # in meters/second^3 (for logging only)
+float32 x		# in meters NED
+float32 y		# in meters NED
+float32 z		# in meters NED
+float32 yaw		# in radians NED -PI..+PI
+float32 yawspeed	# in radians/sec
+float32 vx		# in meters/sec
+float32 vy		# in meters/sec
+float32 vz		# in meters/sec
+float32[3] acceleration # in meters/sec^2
+float32[3] jerk # in meters/sec^3
+float32[3] thrust	# normalized thrust vector in NED
 
-float32 yaw # euler angle of desired attitude in radians -PI..+PI
-float32 yawspeed # angular velocity around NED frame z-axis in radians/second

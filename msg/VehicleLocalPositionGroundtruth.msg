@@ -1,12 +1,11 @@
 # Fused local position in NED.
-# The coordinate system origin is the vehicle position at the time when the EKF2-module was started.
 
 uint64 timestamp			# time since system start (microseconds)
 uint64 timestamp_sample                 # the timestamp of the raw data (microseconds)
 
 bool xy_valid				# true if x and y are valid
 bool z_valid				# true if z is valid
-bool v_xy_valid				# true if vx and vy are valid
+bool v_xy_valid				# true if vy and vy are valid
 bool v_z_valid				# true if vz is valid
 
 # Position in local NED frame
@@ -41,7 +40,6 @@ float32 az        # Down velocity derivative in NED earth-fixed frame, (metres/s
 float32 heading				# Euler yaw angle transforming the tangent plane relative to NED earth-fixed frame, -PI..+PI,  (radians)
 float32 delta_heading
 uint8 heading_reset_counter
-bool heading_good_for_control
 
 # Position of reference point (local NED frame origin) in global (GPS / WGS84) frame
 bool xy_global				# true if position (x, y) has a valid global reference (ref_lat, ref_lon)
@@ -62,9 +60,7 @@ uint8 DIST_BOTTOM_SENSOR_FLOW = 2	# (1 << 1) a flow sensor is used to estimate d
 float32 eph				# Standard deviation of horizontal position error, (metres)
 float32 epv				# Standard deviation of vertical position error, (metres)
 float32 evh				# Standard deviation of horizontal velocity error, (metres/sec)
-float32 evv				# Standard deviation of vertical velocity error, (metres/sec)
-
-bool dead_reckoning                     # True if this position is estimated through dead-reckoning
+float32 evv				# Standard deviation of horizontal velocity error, (metres/sec)
 
 # estimator specified vehicle limits
 float32 vxy_max				# maximum horizontal speed - set to 0 when limiting not required (meters/sec)

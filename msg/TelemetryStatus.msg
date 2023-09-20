@@ -35,7 +35,7 @@ uint32 rx_packet_drop_count             # number of packet drops
 float32 rx_message_lost_rate
 
 
-uint64 HEARTBEAT_TIMEOUT_US = 2500000       # Heartbeat timeout (tolerate missing 1 + jitter)
+uint64 HEARTBEAT_TIMEOUT_US = 1500000       # Heartbeat timeout 1.5 seconds
 
 # Heartbeats per type
 bool heartbeat_type_antenna_tracker         # MAV_TYPE_ANTENNA_TRACKER
@@ -44,8 +44,6 @@ bool heartbeat_type_onboard_controller      # MAV_TYPE_ONBOARD_CONTROLLER
 bool heartbeat_type_gimbal                  # MAV_TYPE_GIMBAL
 bool heartbeat_type_adsb                    # MAV_TYPE_ADSB
 bool heartbeat_type_camera                  # MAV_TYPE_CAMERA
-bool heartbeat_type_parachute               # MAV_TYPE_PARACHUTE
-bool heartbeat_type_open_drone_id           # MAV_TYPE_ODID
 
 # Heartbeats per component
 bool heartbeat_component_telemetry_radio    # MAV_COMP_ID_TELEMETRY_RADIO
@@ -59,5 +57,3 @@ bool heartbeat_component_uart_bridge        # MAV_COMP_ID_UART_BRIDGE
 
 # Misc component health
 bool avoidance_system_healthy
-bool open_drone_id_system_healthy
-bool parachute_system_healthy

@@ -8,4 +8,3 @@ float32 bias_var		# estimated barometric altitude bias variance (m^2)
 float32 innov			# innovation of the last measurement fusion (m)
 float32 innov_var		# innovation variance of the last measurement fusion (m^2)
 float32 innov_test_ratio	# normalized innovation squared test ratio
-

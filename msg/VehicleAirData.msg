@@ -10,5 +10,3 @@ float32 baro_temp_celcius		# Temperature in degrees Celsius
 float32 baro_pressure_pa		# Absolute pressure in Pascals
 
 float32 rho				# air density
-
-uint8 calibration_count     # Calibration changed counter. Monotonically increases whenever calibration changes.

@@ -18,8 +18,8 @@ float32 rng_vpos	# range sensor height innovation (m) and innovation variance (m
 float32 baro_vpos	# barometer height innovation (m) and innovation variance (m**2)
 
 # Auxiliary velocity
-float32[2] aux_hvel	# horizontal auxiliary velocity innovation from landing target measurement (m/sec) and innovation variance ((m/sec)**2)
-float32    aux_vvel	# vertical auxiliary velocity innovation from landing target measurement (m/sec) and innovation variance ((m/sec)**2)
+float32[2] aux_hvel	# horizontal auxiliar velocity innovation from landing target measurement (m/sec) and innovation variance ((m/sec)**2)
+float32    aux_vvel	# vertical auxiliar velocity innovation from landing target measurement (m/sec) and innovation variance ((m/sec)**2)
 
 # Optical flow
 float32[2] flow		# flow innvoation (rad/sec) and innovation variance ((rad/sec)**2)
@@ -31,7 +31,6 @@ float32[2] drag		# drag specific force innovation (m/sec**2) and innovation vari
 float32 airspeed	# airspeed innovation (m/sec) and innovation variance ((m/sec)**2)
 float32 beta		# synthetic sideslip innovation (rad) and innovation variance (rad**2)
 float32 hagl		# height of ground innovation (m) and innovation variance (m**2)
-float32 hagl_rate	# height of ground rate innovation (m/s) and innovation variance ((m/s)**2)
 
 # The innovation test ratios are scalar values. In case the field is a vector,
 # the test ratio will be put in the first component of the vector.
