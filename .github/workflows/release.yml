@@ -1,13 +1,7 @@
-name: Test build DEB package
+name: Release DEB package
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-  push:
-    branches:
-      - "foxy"
+  release:
+    types: [published]
 
 jobs:
   build-debian:
@@ -15,7 +9,7 @@ jobs:
     container: ros:foxy
     steps:
       - uses: actions/checkout@v3
-     
+
       - name: Clear any debian files
         run: |
           cd .. && rm *.deb
@@ -23,15 +17,17 @@ jobs:
       - run: |
           sudo apt -y update
           sudo apt install -y dh-make fakeroot
+
       - name: fakeroot
         run: fakeroot debian/rules binary
+
       - name: Debian file
         id: deb-file-name
         run: |
           cd .. && echo DEB_FILE="$(pwd)/$(find . -name "ros-foxy-clearbot-px4-msgs*.deb" | sed -r 's/^.{2}//')" >> "$GITHUB_OUTPUT"
-      - name: Export deb file artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: built deb file
-          path: ${{ steps.deb-file-name.outputs.DEB_FILE }}
-          if-no-files-found: error
+      - name: Upload to aptserver
+        env:
+          APTSERVER_USER: ${{ secrets.APTSERVER_USER }}
+          APTSERVER_PASSWORD: ${{ secrets.APTSERVER_PASSWORD }}
+          FILENAME: ${{ steps.deb-file-name.outputs.DEB_FILE }}
+        run: cd .. && curl -X POST -u $APTSERVER_USER:$APTSERVER_PASSWORD -F file=@$FILENAME https://aptserver.clearbot.dev/api/files/clearbot-px4-msgs
