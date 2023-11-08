@@ -12,7 +12,7 @@ jobs:
 
       - name: Clear any debian files
         run: |
-          cd .. && rm *.deb
+          cd .. && rm -f *.deb
 
       - run: |
           sudo apt -y update
