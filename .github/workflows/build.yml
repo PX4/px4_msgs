@@ -15,11 +15,6 @@ jobs:
     container: ros:foxy
     steps:
       - uses: actions/checkout@v3
-     
-      - name: Clear any debian files
-        run: |
-          cd .. && rm -f *.deb
-
       - run: |
           sudo apt -y update
           sudo apt install -y dh-make fakeroot
