@@ -24,7 +24,7 @@ Depending on the PX4 and ROS versions you want to use, you need to checkout the 
 
 ### Messages Sync from PX4
 
-When PX4 message definitions in the `main` branch of [PX4 Autopilot](https://github.com/PX4/Autopilot) change, a [CI/CD pipeline](https://github.com/PX4/PX4-Autopilot/blob/main/.github/workflows/metadata.yml#L119) automatically copies and pushes updated ROS message definitions to this repository. This ensures that this repository `main` branch and the PX4-Autopilot `main` branch are always up to date.
+When PX4 message definitions in the `main` branch of [PX4 Autopilot](https://github.com/PX4/PX4-Autopilot) change, a [CI/CD pipeline](https://github.com/PX4/PX4-Autopilot/blob/main/.github/workflows/metadata.yml#L119) automatically copies and pushes updated ROS message definitions to this repository. This ensures that this repository `main` branch and the PX4-Autopilot `main` branch are always up to date.
 However, if you are using a custom PX4 version and you modified existing messages or created new one, then you have to manually synchronize them in this repository:
 ### Manual Message Sync
 
