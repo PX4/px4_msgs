@@ -7,8 +7,6 @@
 
 uint64 timestamp # time since system start (microseconds)
 
-uint32 MESSAGE_VERSION = 3
-
 # setpoints
 float32[3] position # [m] NED local world frame
 

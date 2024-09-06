@@ -1,9 +1,7 @@
 # This is similar to the mavlink message ATTITUDE_QUATERNION, but for onboard use
 # The quaternion uses the Hamilton convention, and the order is q(w, x, y, z)
 
-uint32 MESSAGE_VERSION = 3
-
-uint32 new_field
+uint32 MESSAGE_VERSION = 2
 
 uint64 timestamp                # time since system start (microseconds)
 
