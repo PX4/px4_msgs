@@ -1,3 +1,7 @@
+/****************************************************************************
+ * Copyright (c) 2024 PX4 Development Team.
+ * SPDX-License-Identifier: BSD-3-Clause
+ ****************************************************************************/
 #pragma once
 
 #include <string>
@@ -30,3 +34,19 @@ static inline std::pair<std::string, MessageVersionType> getNonVersionedTopicNam
 	}
 	return std::make_pair(non_versioned_topic_name, std::stol(version));
 }
+
+/**
+ * Get the full topic name, including namespace from a topic name.
+ * namespace_name should be set to Node::get_effective_namespace()
+ */
+static inline std::string getFullTopicName(const std::string& namespace_name, const std::string& topic_name) {
+	std::string full_topic_name = topic_name;
+	if (!full_topic_name.empty() && full_topic_name[0] != '/') {
+		if (namespace_name.empty() || namespace_name.back() != '/') {
+			full_topic_name = '/' + full_topic_name;
+		}
+		full_topic_name = namespace_name + full_topic_name;
+	}
+	return full_topic_name;
+}
+

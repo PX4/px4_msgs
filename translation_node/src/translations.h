@@ -1,3 +1,7 @@
+/****************************************************************************
+ * Copyright (c) 2024 PX4 Development Team.
+ * SPDX-License-Identifier: BSD-3-Clause
+ ****************************************************************************/
 #pragma once
 
 #include <string>
@@ -9,53 +13,42 @@
 #include <memory>
 
 #include "util.h"
+#include "graph.h"
 
 #include <rclcpp/rclcpp.hpp>
 
 
-using DirectTranslationCB = std::function<void(const void*, void*)>;
-using SubscriptionFactoryCB = std::function<rclcpp::SubscriptionBase::SharedPtr(rclcpp::Node&, const std::function<void(void*)>& on_topic_cb)>;
+using TranslationCB = std::function<void(const std::vector<MessageBuffer>&, std::vector<MessageBuffer>&)>;
+using SubscriptionFactoryCB = std::function<rclcpp::SubscriptionBase::SharedPtr(rclcpp::Node&, const std::function<void()>& on_topic_cb)>;
 using PublicationFactoryCB = std::function<rclcpp::PublisherBase::SharedPtr(rclcpp::Node&)>;
 
-struct DirectTranslationData {
-	struct Version {
-		MessageVersionType version;
-		std::shared_ptr<void> message_buffer;
-		SubscriptionFactoryCB subscription_factory;
-		PublicationFactoryCB publication_factory;
-		size_t max_serialized_message_size{};
-	};
+struct Topic {
+	std::string topic_name;
+	MessageVersionType version{};
 
-	Version older;
-	Version newer;
+	SubscriptionFactoryCB subscription_factory;
+	PublicationFactoryCB publication_factory;
 
-	DirectTranslationCB translation_cb_from_older;
-	DirectTranslationCB translation_cb_to_older;
+	std::shared_ptr<void> message_buffer;
+	size_t max_serialized_message_size{};
 };
 
-class TranslationForTopic {
-public:
-	explicit TranslationForTopic(std::string topic_name="") : _topic_name(std::move(topic_name)) {}
-
-	void registerVersion(DirectTranslationData data);
-
-	const std::string& topicName() const { return _topic_name; }
-	const std::vector<DirectTranslationData>& directTranslations() const { return _direct_translations; };
-
-private:
-	const std::string _topic_name;
-	std::vector<DirectTranslationData> _direct_translations;
+struct Translation {
+	TranslationCB cb;
+	std::vector<MessageIdentifier> inputs;
+	std::vector<MessageIdentifier> outputs;
 };
 
 class Translations {
 public:
-
 	Translations() = default;
 
-	void registerDirectTranslation(const std::string& topic_name, DirectTranslationData data);
+	void addTopic(Topic topic) { _topics.push_back(std::move(topic)); }
+	void addTranslation(Translation translation) { _translations.push_back(std::move(translation)); }
 
-	const std::unordered_map<std::string, TranslationForTopic>& topicTranslations() const { return _topic_translations; }
-
+	const std::vector<Topic>& topics() const { return _topics; }
+	const std::vector<Translation>& translations() const { return _translations; }
 private:
-	std::unordered_map<std::string, TranslationForTopic> _topic_translations;
+	std::vector<Topic> _topics;
+	std::vector<Translation> _translations;
 };

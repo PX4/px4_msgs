@@ -1,3 +1,7 @@
+/****************************************************************************
+ * Copyright (c) 2024 PX4 Development Team.
+ * SPDX-License-Identifier: BSD-3-Clause
+ ****************************************************************************/
 #pragma once
 
 #include "translations.h"
@@ -19,20 +23,23 @@ public:
 	}
 
 	template<class T>
-	void registerTranslation(const std::string& topic_name) {
-		DirectTranslationData data{};
-		data.older = getVersionForMessageType<typename T::MessageOlder>(topic_name);
-		data.newer = getVersionForMessageType<typename T::MessageNewer>(topic_name);
+	void registerDirectTranslation(const std::string& topic_name) {
+		_translations.addTopic(getTopicForMessageType<typename T::MessageOlder>(topic_name));
+		_translations.addTopic(getTopicForMessageType<typename T::MessageNewer>(topic_name));
 
 		// Translation callbacks
-		data.translation_cb_from_older = [](const void* older_msg, void* newer_msg) {
-			T::fromOlder(*(const typename T::MessageOlder*)older_msg, *(typename T::MessageNewer*)newer_msg);
+		auto translation_cb_from_older = [](const std::vector<MessageBuffer>& older_msg, std::vector<MessageBuffer>& newer_msg) {
+			T::fromOlder(*(const typename T::MessageOlder*)older_msg[0].get(), *(typename T::MessageNewer*)newer_msg[0].get());
 		};
-		data.translation_cb_to_older = [](const void* newer_msg, void* older_msg) {
-			T::toOlder(*(const typename T::MessageNewer*)newer_msg, *(typename T::MessageOlder*)older_msg);
+		auto translation_cb_to_older = [](const std::vector<MessageBuffer>& newer_msg, std::vector<MessageBuffer>& older_msg) {
+			T::toOlder(*(const typename T::MessageNewer*)newer_msg[0].get(), *(typename T::MessageOlder*)older_msg[0].get());
 		};
-
-		_translations.registerDirectTranslation(topic_name, std::move(data));
+		_translations.addTranslation({translation_cb_from_older,
+									  {MessageIdentifier{topic_name, T::MessageOlder::MESSAGE_VERSION}},
+									  {MessageIdentifier{topic_name, T::MessageNewer::MESSAGE_VERSION}}});
+		_translations.addTranslation({translation_cb_to_older,
+									  {MessageIdentifier{topic_name, T::MessageNewer::MESSAGE_VERSION}},
+									  {MessageIdentifier{topic_name, T::MessageOlder::MESSAGE_VERSION}}});
 	}
 
 	const Translations& translations() const { return _translations; }
@@ -41,19 +48,22 @@ private:
 	RegisteredTranslations() = default;
 
 	template<typename RosMessageType>
-	DirectTranslationData::Version getVersionForMessageType(const std::string& topic_name) {
-		DirectTranslationData::Version ret{};
+	Topic getTopicForMessageType(const std::string& topic_name) {
+		Topic ret{};
+		ret.topic_name = topic_name;
 		ret.version = RosMessageType::MESSAGE_VERSION;
-		ret.message_buffer = std::static_pointer_cast<void>(std::make_shared<RosMessageType>());
+		auto message_buffer = std::make_shared<RosMessageType>();
+		ret.message_buffer = std::static_pointer_cast<void>(message_buffer);
 
 		// Subscription/Publication factory methods
 		const std::string topic_name_versioned = getVersionedTopicName(topic_name, ret.version);
-		ret.subscription_factory = [topic_name_versioned](rclcpp::Node& node,
-												const std::function<void(void*)>& on_topic_cb) -> rclcpp::SubscriptionBase::SharedPtr {
+		ret.subscription_factory = [topic_name_versioned, message_buffer](rclcpp::Node& node,
+												const std::function<void()>& on_topic_cb) -> rclcpp::SubscriptionBase::SharedPtr {
 			return std::dynamic_pointer_cast<rclcpp::SubscriptionBase>(
 					node.create_subscription<RosMessageType>(topic_name_versioned, rclcpp::QoS(1).best_effort(),
-															 [on_topic_cb=on_topic_cb](typename RosMessageType::UniquePtr msg) -> void {
-																 on_topic_cb(msg.get());
+															 [on_topic_cb=on_topic_cb, message_buffer](typename RosMessageType::UniquePtr msg) -> void {
+																 *message_buffer = *msg;
+																 on_topic_cb();
 															 }));
 		};
 		ret.publication_factory = [topic_name_versioned](rclcpp::Node& node) -> rclcpp::PublisherBase::SharedPtr {
@@ -76,15 +86,15 @@ private:
 };
 
 template<class T>
-class RegistrationHelper {
+class RegistrationHelperDirect {
 public:
-	explicit RegistrationHelper(const std::string& topic_name) {
-		RegisteredTranslations::instance().registerTranslation<T>(topic_name);
+	explicit RegistrationHelperDirect(const std::string& topic_name) {
+		RegisteredTranslations::instance().registerDirectTranslation<T>(topic_name);
 	}
-	RegistrationHelper(RegistrationHelper const&) = delete;
-	void operator=(RegistrationHelper const&) = delete;
+	RegistrationHelperDirect(RegistrationHelperDirect const&) = delete;
+	void operator=(RegistrationHelperDirect const&) = delete;
 private:
 };
 
 #define REGISTER_MESSAGE_TRANSLATION_DIRECT(topic_name, class_name) \
-	static RegistrationHelper<class_name> class_name##_registration(topic_name);
+	static RegistrationHelperDirect<class_name> class_name##_registration(topic_name);
