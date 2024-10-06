@@ -18,6 +18,9 @@ Depending on the PX4 and ROS versions you want to use, you need to checkout the 
 | [v1.14](https://github.com/PX4/px4_msgs/tree/release/1.14)           | Foxy    | Ubuntu 20.04 | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
 | [v1.14](https://github.com/PX4/px4_msgs/tree/release/1.14)           | Humble  | Ubuntu 22.04 | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
 | [v1.14](https://github.com/PX4/px4_msgs/tree/release/1.14)           | Rolling | Ubuntu 22.04 | [release/1.14](https://github.com/PX4/px4_msgs/tree/release/1.14) |
+| [v1.15](https://github.com/PX4/px4_msgs/tree/release/1.15)           | Foxy    | Ubuntu 20.04 | [release/1.15](https://github.com/PX4/px4_msgs/tree/release/1.15) |
+| [v1.15](https://github.com/PX4/px4_msgs/tree/release/1.15)           | Humble  | Ubuntu 22.04 | [release/1.15](https://github.com/PX4/px4_msgs/tree/release/1.15) |
+| [v1.15](https://github.com/PX4/px4_msgs/tree/release/1.15)           | Rolling | Ubuntu 22.04 | [release/1.15](https://github.com/PX4/px4_msgs/tree/release/1.15) |
 | [main](https://github.com/PX4/px4_msgs/tree/main)                    | Foxy    | Ubuntu 22.04 | [main](https://github.com/PX4/px4_msgs)                           |
 | [main](https://github.com/PX4/px4_msgs/tree/main)                    | Humble  | Ubuntu 22.04 | [main](https://github.com/PX4/px4_msgs)                           |
 | [main](https://github.com/PX4/px4_msgs/tree/main)                    | Rolling | Ubuntu 22.04 | [main](https://github.com/PX4/px4_msgs)                           |
@@ -29,10 +32,13 @@ However, if you are using a custom PX4 version and you modified existing message
 ### Manual Message Sync
 
 - Checkout the correct branch associated to the PX4 version from which you detached you custom version.
-- Delete all `*.msg` files in `msg/` and copy all `*.msg` files from `PX4-Autopilot/msg/` in it. Assuming that this repository and the PX4-Autopilot repository are placed in your home folder, you can run:
+- Delete all `*.msg` and `*.srv` files in `msg/` and  `srv/`.
+- Copy all `*.msg` and  `*.srv` files from `PX4-Autopilot/msg/` and `PX4-Autopilot/srv/` in  `msg/` and  `srv/`, respectively. Assuming that this repository and the PX4-Autopilot repository are placed in your home folder, you can run:
   ```sh
   rm -f ~/px4_msgs/msg/*.msg
+  rm -f ~/px4_msgs/srv/*.srv
   cp ~/PX4-Autopilot/msg/*.msg ~/px4_msgs/msg/
+  cp ~/PX4-Autopilot/srv/*.srv ~/px4_msgs/srv/
   ```
 
 ## Install, build and usage
