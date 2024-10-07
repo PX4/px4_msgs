@@ -8,6 +8,7 @@
 
 #include "vehicle_attitude_v2.h"
 #include "vehicle_attitude_v3.h"
+#include "vehicle_local_global_position_v2.h"
 #include "pub_sub_graph.h"
 
 using namespace std::chrono_literals;

@@ -10,10 +10,10 @@ PubSubGraph::PubSubGraph(rclcpp::Node &node, const Translations &translations) :
 	std::unordered_map<std::string, std::set<MessageVersionType>> known_versions;
 
 	for (const auto& topic : translations.topics()) {
-		const std::string full_topic_name = getFullTopicName(_node.get_effective_namespace(), topic.topic_name);
+		const std::string full_topic_name = getFullTopicName(_node.get_effective_namespace(), topic.id.topic_name);
 		_known_topics_warned.insert({full_topic_name, false});
 
-		const MessageIdentifier id{full_topic_name, topic.version};
+		const MessageIdentifier id{full_topic_name, topic.id.version};
 		NodeDataPubSub node_data{topic.subscription_factory, topic.publication_factory, id, topic.max_serialized_message_size};
 		_pub_sub_graph.addNodeIfNotExists(id, std::move(node_data), topic.message_buffer);
 		known_versions[full_topic_name].insert(id.version);

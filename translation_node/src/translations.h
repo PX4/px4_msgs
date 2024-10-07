@@ -23,8 +23,7 @@ using SubscriptionFactoryCB = std::function<rclcpp::SubscriptionBase::SharedPtr(
 using PublicationFactoryCB = std::function<rclcpp::PublisherBase::SharedPtr(rclcpp::Node&)>;
 
 struct Topic {
-	std::string topic_name;
-	MessageVersionType version{};
+	MessageIdentifier id;
 
 	SubscriptionFactoryCB subscription_factory;
 	PublicationFactoryCB publication_factory;

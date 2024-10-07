@@ -1,5 +1,6 @@
 # Fused local position in NED.
 # The coordinate system origin is the vehicle position at the time when the EKF2-module was started.
+uint32 MESSAGE_VERSION = 2
 
 uint64 timestamp			# time since system start (microseconds)
 uint64 timestamp_sample                 # the timestamp of the raw data (microseconds)
@@ -56,8 +57,13 @@ float32 ref_alt				# Reference altitude AMSL, (metres)
 
 # Distance to surface
 bool dist_bottom_valid			# true if distance to bottom surface is valid
-float32 dist_bottom			# Distance from from bottom surface to ground, (metres)
 float32 dist_bottom_var                 # terrain estimate variance (m^2)
+
+float32 delta_alt 	# Reset delta for altitude
+float32 delta_terrain   # Reset delta for terrain
+uint8 lat_lon_reset_counter	# Counter for reset events on horizontal position coordinates
+uint8 alt_reset_counter 	# Counter for reset events on altitude
+uint8 terrain_reset_counter     # Counter for reset events on terrain
 
 float32 delta_dist_bottom               # Amount of vertical shift of dist bottom estimate in latest reset [m]
 uint8 dist_bottom_reset_counter         # Index of latest dist bottom estimate reset

@@ -19,6 +19,8 @@ public:
 	using MessageNewer = px4_msgs_old::msg::VehicleAttitudeV2;
 	static_assert(MessageNewer::MESSAGE_VERSION == 2);
 
+	static constexpr const char* kTopic = "fmu/out/vehicle_attitude";
+
 	static void fromOlder(const MessageOlder &msg_older, MessageNewer &msg_newer) {
 		// No change in message definition
 		static_assert(sizeof(msg_newer) == sizeof(msg_older));
@@ -32,4 +34,4 @@ public:
 private:
 };
 
-REGISTER_MESSAGE_TRANSLATION_DIRECT("fmu/out/vehicle_attitude", VehicleAttitudeV2Translation);
+REGISTER_TOPIC_TRANSLATION_DIRECT(VehicleAttitudeV2Translation);
