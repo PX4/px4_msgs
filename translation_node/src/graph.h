@@ -5,14 +5,15 @@
 #pragma once
 
 #include "util.h"
+#include <algorithm>
+#include <bitset>
+#include <functional>
+#include <memory>
+#include <optional>
+#include <queue>
 #include <string>
 #include <utility>
 #include <vector>
-#include <functional>
-#include <memory>
-#include <bitset>
-#include <queue>
-#include <optional>
 
 // This implements a directed graph with potential cycles used for translation.
 // There are 2 types of nodes: messages (e.g. publication/subscription endpoints) and
@@ -137,8 +138,6 @@ private:
 	NodeData _data;
 
 	const size_t _index;
-	MessageNode<NodeData, IdType>* _iterating_previous{nullptr};
-	bool _want_translation{false};
 
 	friend class Graph<NodeData, IdType>;
 };
@@ -195,21 +194,49 @@ public:
 	/**
 	 * @brief Translate a message node in the graph.
 	 *
-	 * This function performs a two-pass translation of a message node in the graph.
-	 * First, it finds the required nodes that need the translation results, and then
-	 * it runs the translation on these nodes to prevent unnecessary message conversions.
-	 *
 	 * @param node The message node to translate.
-	 * @param node_requires_translation_result A callback function that determines whether a node requires the translation result.
 	 * @param on_translated A callback function that is called for translated nodes (with an updated message buffer).
+	 *                      This will not be called for the provided node.
 	 */
-	void translate(const MessageNodePtr& node, const std::function<bool(const MessageNodePtr&)>& node_requires_translation_result,
+	void translate(const MessageNodePtr& node,
 				   const std::function<void(const MessageNodePtr&)>& on_translated) {
-		// Do translation in 2 passes: first, find the required nodes that require the translation results,
-		// then run the translation on these nodes to prevent unnecessary message conversions
-		// (the assumption here is that conversions are more expensive than iterating the graph)
-		prepareTranslation(node, node_requires_translation_result);
-		runTranslation(node, on_translated);
+		resetNodesVisited();
+
+		// Iterate all reachable nodes from a given node using the BFS (shortest path) algorithm,
+		// while using translation nodes as barriers (only continue when all inputs are ready)
+
+		std::queue<MessageNodePtr> queue;
+		_node_visited[node->_index] = true;
+		queue.push(node);
+
+		while (!queue.empty()) {
+			MessageNodePtr current = queue.front();
+			queue.pop();
+			for (auto& translation : current->_translations) {
+				const bool any_output_visited =
+						std::any_of(translation.node->outputs().begin(), translation.node->outputs().end(), [&](const MessageNodePtr& next_node) {
+							return _node_visited[next_node->_index];
+						});
+				// If any output node has already been visited, skip this translation node (prevents translating
+				// backwards, from where we came from already)
+				if (any_output_visited) {
+					continue;
+				}
+				translation.node->setInputReady(translation.input_index);
+				// Iterate the output nodes only if the translation node is ready
+				if (translation.node->translate()) {
+
+					for (auto &next_node : translation.node->outputs()) {
+						if (_node_visited[next_node->_index]) {
+							continue;
+						}
+						_node_visited[next_node->_index] = true;
+						on_translated(next_node);
+						queue.push(next_node);
+					}
+				}
+			}
+		}
 	}
 
 	std::optional<MessageNodePtr> findNode(const IdType& id) const {
@@ -230,12 +257,10 @@ public:
 	 * Iterate all reachable nodes from a given node using the BFS (shortest path) algorithm
 	 */
 	void iterateBFS(const MessageNodePtr& node, const std::function<void(const MessageNodePtr&)>& cb) {
-		_node_visited.resize(_nodes.size());
-		std::fill(_node_visited.begin(), _node_visited.end(), false);
+		resetNodesVisited();
 
 		std::queue<MessageNodePtr> queue;
 		_node_visited[node->_index] = true;
-		node->_iterating_previous = nullptr;
 		queue.push(node);
 		cb(node);
 
@@ -248,7 +273,6 @@ public:
 						continue;
 					}
 					_node_visited[next_node->_index] = true;
-					next_node->_iterating_previous = current.get();
 					queue.push(next_node);
 
 					cb(next_node);
@@ -259,59 +283,11 @@ public:
 
 
 private:
-	void prepareTranslation(const MessageNodePtr& node, const std::function<bool(const MessageNodePtr&)>& node_requires_translation_result) {
-		iterateBFS(node, [&](const MessageNodePtr& node) {
-			if (node_requires_translation_result(node)) {
-				auto* previous_node = node.get();
-				while (previous_node) {
-					previous_node->_want_translation = true;
-					previous_node = previous_node->_iterating_previous;
-				}
-			}
-		});
-	}
-
-	void runTranslation(const MessageNodePtr& node, const std::function<void(const MessageNodePtr&)>& on_translated) {
-		_node_had_update.resize(_nodes.size());
-		std::fill(_node_had_update.begin(), _node_had_update.end(), false);
-		_node_had_update[node->_index] = true;
-
-		iterateBFS(node, [&](const MessageNodePtr& node) {
-			// If there was no update for this node, there's nothing to do (i.e. want_translation is false or the
-			// message buffer did not change)
-			if (!_node_had_update[node->_index]) {
-				return;
-			}
-
-			on_translated(node);
-
-			if (node->_want_translation) {
-				node->_want_translation = false;
-				for (auto &translation : node->_translations) {
-					// Skip translation if none of the output nodes has _want_translation set or
-					// if any of the nodes already had an update.
-					// This also prevents translating 'backwards' by one step (from where we came from)
-					bool want_translation = false;
-					bool had_update = false;
-					for (auto &next_node: translation.node->outputs()) {
-						want_translation |= next_node->_want_translation;
-						had_update |= _node_had_update[next_node->_index];
-					}
-					if (!want_translation || had_update) {
-						continue;
-					}
-					translation.node->setInputReady(translation.input_index);
-					if (translation.node->translate()) {
-						for (auto &next_node: translation.node->outputs()) {
-							_node_had_update[next_node->_index] = true;
-						}
-					}
-				}
-			}
-		});
+	void resetNodesVisited() {
+		_node_visited.resize(_nodes.size());
+		std::fill(_node_visited.begin(), _node_visited.end(), false);
 	}
 
 	std::unordered_map<IdType, MessageNodePtr> _nodes;
 	std::vector<bool> _node_visited; ///< Cached, to avoid the need to re-allocate on each iteration
-	std::vector<bool> _node_had_update; ///< Cached, to avoid the need to re-allocate on each iteration
 };

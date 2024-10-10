@@ -12,6 +12,7 @@ find_package(px4_msgs REQUIRED)
 find_package(px4_msgs_old REQUIRED)
 
 add_library(${PROJECT_NAME}_lib
+        src/monitor.cpp
         src/pub_sub_graph.cpp
         src/translations.cpp
 )
@@ -26,6 +27,7 @@ install(TARGETS
         DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
+  find_package(std_msgs REQUIRED)
   find_package(ament_lint_auto REQUIRED)
   find_package(ament_cmake_gtest REQUIRED)
   ament_lint_auto_find_test_dependencies()
@@ -34,10 +36,12 @@ if(BUILD_TESTING)
   ament_add_gtest(${PROJECT_NAME}_unit_tests
           test/graph.cpp
           test/main.cpp
+          test/pub_sub.cpp
   )
   target_include_directories(${PROJECT_NAME}_unit_tests PRIVATE ${CMAKE_CURRENT_LIST_DIR})
   target_link_libraries(${PROJECT_NAME}_unit_tests ${PROJECT_NAME}_lib)
   ament_target_dependencies(${PROJECT_NAME}_unit_tests
+          std_msgs
           rclcpp
   )
 endif()

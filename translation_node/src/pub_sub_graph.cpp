@@ -140,9 +140,6 @@ void PubSubGraph::onSubscriptionUpdate(const Graph<NodeDataPubSub>::MessageNodeP
 	_pub_sub_graph.translate(
 			node,
 			[](const Graph<NodeDataPubSub>::MessageNodePtr& node) {
-				return node->data().publication != nullptr;
-			},
-			[](const Graph<NodeDataPubSub>::MessageNodePtr& node) {
 				if (node->data().publication != nullptr) {
 					rcl_publish(node->data().publication->get_publisher_handle().get(),
 								node->buffer().get(), nullptr);

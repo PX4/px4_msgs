@@ -143,8 +143,9 @@ public:
 
 	const Translations& translations() const { return _translations; }
 
-private:
+protected:
 	RegisteredTranslations() = default;
+private:
 
 	template<typename RosMessageType>
 	Topic getTopicForMessageType(const std::string& topic_name) {
