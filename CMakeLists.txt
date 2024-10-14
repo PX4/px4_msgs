@@ -34,10 +34,6 @@ set(PX4_MSGS
 	"msg/BatteryStatus.msg"
 	"msg/TrajectoryWaypoint.msg"
 	"msg/TrajectorySetpoint.msg"
-	"msg/EstimatorStatus.msg"
-	"msg/EstimatorStates.msg"
-	"msg/EstimatorSelectorStatus.msg"
-	"msg/EstimatorStatusFlags.msg"
 )
 
 file(GLOB ROS_MSG_DIR_LIST "${MSGS_DIR}/*.msg")
