@@ -18,7 +18,27 @@ find_package(rosidl_default_generators REQUIRED)
 
 # get all msg files
 set(MSGS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/msg")
-file(GLOB PX4_MSGS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${MSGS_DIR}/*.msg")
+# file(GLOB PX4_MSGS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${MSGS_DIR}/*.msg")
+# generate for specific messages
+set(PX4_MSGS
+	"msg/VehicleStatus.msg"
+	"msg/VehicleCommand.msg"
+	"msg/VehicleLocalPosition.msg"
+	"msg/VehicleOdometry.msg"
+	"msg/VehicleGlobalPosition.msg"
+	"msg/VehicleAttitude.msg"
+	"msg/VehicleAttitudeSetpoint.msg"
+	"msg/VehicleTrajectoryWaypoint.msg"
+	"msg/VehicleControlMode.msg"
+	"msg/OffboardControlMode.msg"
+	"msg/BatteryStatus.msg"
+	"msg/TrajectoryWaypoint.msg"
+	"msg/TrajectorySetpoint.msg"
+	"msg/EstimatorStatus.msg"
+	"msg/EstimatorStates.msg"
+	"msg/EstimatorSelectorStatus.msg"
+	"msg/EstimatorStatusFlags.msg"
+)
 
 file(GLOB ROS_MSG_DIR_LIST "${MSGS_DIR}/*.msg")
 
