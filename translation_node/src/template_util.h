@@ -4,7 +4,9 @@
  ****************************************************************************/
 #pragma once
 
-#include <bits/utility.h>
+#include <memory>
+#include <utility>
+#include <type_traits>
 #include <vector>
 
 /**
