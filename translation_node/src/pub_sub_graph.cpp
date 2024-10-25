@@ -40,6 +40,7 @@ void PubSubGraph::updateCurrentTopics(const std::vector<TopicInfo> &topics) {
 	_pub_sub_graph.iterateNodes([](const MessageIdentifier& type, const Graph<NodeDataPubSub>::MessageNodePtr& node) {
 		node->data().has_external_publisher = false;
 		node->data().has_external_subscriber = false;
+		node->data().visited = false;
 	});
 
 	for (const auto& info : topics) {
@@ -95,6 +96,7 @@ void PubSubGraph::updateCurrentTopics(const std::vector<TopicInfo> &topics) {
 										 || (num_publishers == 1 && num_subscribers_without_publisher >= 1);
 		if (require_translation) {
 			_pub_sub_graph.iterateBFS(node, [&](const Graph<NodeDataPubSub>::MessageNodePtr& node) {
+				node->data().visited = true;
 				// Has subscriber(s)?
 				if (node->data().has_external_subscriber && !node->data().publication) {
 					RCLCPP_INFO(_node.get_logger(), "Found subscriber for topic '%s', version: %i, adding publisher", node->data().topic_name.c_str(), node->data().version);
@@ -118,6 +120,7 @@ void PubSubGraph::updateCurrentTopics(const std::vector<TopicInfo> &topics) {
 		} else {
 			// Reset any publishers or subscribers
 			_pub_sub_graph.iterateBFS(node, [&](const Graph<NodeDataPubSub>::MessageNodePtr& node) {
+				node->data().visited = true;
 				if (node->data().publication) {
 					RCLCPP_INFO(_node.get_logger(), "Removing publisher for topic '%s', version: %i",
 								node->data().topic_name.c_str(), node->data().version);
@@ -130,9 +133,6 @@ void PubSubGraph::updateCurrentTopics(const std::vector<TopicInfo> &topics) {
 				}
 			});
 		}
-	});
-	_pub_sub_graph.iterateNodes([](const MessageIdentifier& type, const Graph<NodeDataPubSub>::MessageNodePtr& node) {
-		node->data().visited = false;
 	});
 }
 
