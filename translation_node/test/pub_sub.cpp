@@ -109,8 +109,8 @@ TEST_F(PubSubGraphTest, DirectTranslation)
 	RegisteredTranslationsTest registered_translations;
 	registered_translations.registerDirectTranslation<DirectTranslationTest>();
 
-	PubSubGraph graph(*_test_node, registered_translations.translations());
-	Monitor monitor(*_test_node, graph);
+	PubSubGraph graph(*_test_node, registered_translations.topicTranslations());
+	Monitor monitor(*_test_node, &graph, nullptr);
 
 	const std::string topic_name = DirectTranslationTest::kTopic;
 	const std::string topic_name_older_version = getVersionedTopicName(topic_name, DirectTranslationTest::MessageOlder::MESSAGE_VERSION);
@@ -276,8 +276,8 @@ TEST_F(PubSubGraphTest, TranslationMulti) {
 	registered_translations.registerTranslation<TranslationMultiTestV2>();
 	registered_translations.registerTranslation<TranslationMultiTestV3>();
 
-	PubSubGraph graph(*_test_node, registered_translations.translations());
-	Monitor monitor(*_test_node, graph);
+	PubSubGraph graph(*_test_node, registered_translations.topicTranslations());
+	Monitor monitor(*_test_node, &graph, nullptr);
 
 	const std::string topic_name_a = TranslationMultiTestV2::kTopicsOlder[0];
 	const std::string topic_name_b = TranslationMultiTestV2::kTopicsOlder[1];

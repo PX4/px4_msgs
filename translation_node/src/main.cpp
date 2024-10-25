@@ -9,7 +9,9 @@
 #include "vehicle_attitude_v2.h"
 #include "vehicle_attitude_v3.h"
 #include "vehicle_local_global_position_v2.h"
+#include "vehicle_command_service_v1.h"
 #include "pub_sub_graph.h"
+#include "service_graph.h"
 #include "monitor.h"
 
 using namespace std::chrono_literals;
@@ -19,12 +21,14 @@ class RosTranslationNode : public rclcpp::Node
 public:
 	RosTranslationNode() : Node("translation_node")
 	{
-		_pub_sub_graph = std::make_unique<PubSubGraph>(*this, RegisteredTranslations::instance().translations());
-		_monitor = std::make_unique<Monitor>(*this, *_pub_sub_graph);
+		_pub_sub_graph = std::make_unique<PubSubGraph>(*this, RegisteredTranslations::instance().topicTranslations());
+		_service_graph = std::make_unique<ServiceGraph>(*this, RegisteredTranslations::instance().serviceTranslations());
+		_monitor = std::make_unique<Monitor>(*this, _pub_sub_graph.get(), _service_graph.get());
 	}
 
 private:
 	std::unique_ptr<PubSubGraph> _pub_sub_graph;
+	std::unique_ptr<ServiceGraph> _service_graph;
 	rclcpp::TimerBase::SharedPtr _node_update_timer;
 	std::unique_ptr<Monitor> _monitor;
 };

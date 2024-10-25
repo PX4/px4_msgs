@@ -18,7 +18,7 @@ public:
 		int num_publishers; ///< does not include this node's publishers
 	};
 
-	PubSubGraph(rclcpp::Node& node, const Translations& translations);
+	PubSubGraph(rclcpp::Node& node, const TopicTranslations& translations);
 
 	void updateCurrentTopics(const std::vector<TopicInfo>& topics);
 

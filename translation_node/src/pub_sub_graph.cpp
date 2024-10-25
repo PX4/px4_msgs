@@ -5,7 +5,7 @@
 #include "pub_sub_graph.h"
 #include "util.h"
 
-PubSubGraph::PubSubGraph(rclcpp::Node &node, const Translations &translations) : _node(node) {
+PubSubGraph::PubSubGraph(rclcpp::Node &node, const TopicTranslations &translations) : _node(node) {
 
 	std::unordered_map<std::string, std::set<MessageVersionType>> known_versions;
 
@@ -19,15 +19,16 @@ PubSubGraph::PubSubGraph(rclcpp::Node &node, const Translations &translations) :
 		known_versions[full_topic_name].insert(id.version);
 	}
 
+	auto get_full_topic_names = [this](std::vector<MessageIdentifier> ids) {
+		for (auto& id : ids) {
+			id.topic_name = getFullTopicName(_node.get_effective_namespace(), id.topic_name);
+		}
+		return ids;
+	};
+
 	for (const auto& translation : translations.translations()) {
-		std::vector<MessageIdentifier> inputs = translation.inputs;
-		for (auto& input : inputs) {
-			input.topic_name = getFullTopicName(_node.get_effective_namespace(), input.topic_name);
-		}
-		std::vector<MessageIdentifier> outputs = translation.outputs;
-		for (auto& output : outputs) {
-			output.topic_name = getFullTopicName(_node.get_effective_namespace(), output.topic_name);
-		}
+		const std::vector<MessageIdentifier> inputs = get_full_topic_names(translation.inputs);
+		const std::vector<MessageIdentifier> outputs = get_full_topic_names(translation.outputs);
 		_pub_sub_graph.addTranslation(translation.cb, inputs, outputs);
 	}
 

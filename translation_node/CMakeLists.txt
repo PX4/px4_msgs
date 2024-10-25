@@ -11,9 +11,17 @@ find_package(rclcpp REQUIRED)
 find_package(px4_msgs REQUIRED)
 find_package(px4_msgs_old REQUIRED)
 
+if(DEFINED ENV{ROS_DISTRO})
+  set(ROS_DISTRO $ENV{ROS_DISTRO})
+else()
+  set(ROS_DISTRO "rolling")
+endif()
+
+
 add_library(${PROJECT_NAME}_lib
         src/monitor.cpp
         src/pub_sub_graph.cpp
+        src/service_graph.cpp
         src/translations.cpp
 )
 ament_target_dependencies(${PROJECT_NAME}_lib rclcpp px4_msgs px4_msgs_old)
@@ -25,6 +33,11 @@ ament_target_dependencies(${PROJECT_NAME} rclcpp px4_msgs px4_msgs_old)
 install(TARGETS
         ${PROJECT_NAME}
         DESTINATION lib/${PROJECT_NAME})
+
+if(${ROS_DISTRO} STREQUAL "humble")
+  message(WARNING "Disabling services for ROS humble (API is not supported)")
+  target_compile_definitions(${PROJECT_NAME}_lib PRIVATE DISABLE_SERVICES)
+endif()
 
 if(BUILD_TESTING)
   find_package(std_msgs REQUIRED)

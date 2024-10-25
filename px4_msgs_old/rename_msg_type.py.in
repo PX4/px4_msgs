@@ -19,6 +19,10 @@ def replace_namespace_and_type(content: str):
     content = content.replace('"px4_msgs_old::msg"', '"px4_msgs::msg"')
     # Replace versioned type with non-versioned one
     content = re.sub(r'("[a-zA-Z0-9]+)V[0-9]+"', '\\1"', content)
+    # Services
+    content = content.replace('"px4_msgs_old::srv"', '"px4_msgs::srv"')
+    content = re.sub(r'("[a-zA-Z0-9]+)V[0-9]+_Request"', '\\1_Request"', content)
+    content = re.sub(r'("[a-zA-Z0-9]+)V[0-9]+_Response"', '\\1_Response"', content)
     return content
 
 with open(json_file, 'r') as f:
