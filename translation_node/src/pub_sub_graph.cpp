@@ -140,10 +140,14 @@ void PubSubGraph::updateCurrentTopics(const std::vector<TopicInfo> &topics) {
 void PubSubGraph::onSubscriptionUpdate(const Graph<NodeDataPubSub>::MessageNodePtr& node) {
 	_pub_sub_graph.translate(
 			node,
-			[](const Graph<NodeDataPubSub>::MessageNodePtr& node) {
+			[this](const Graph<NodeDataPubSub>::MessageNodePtr& node) {
 				if (node->data().publication != nullptr) {
-					rcl_publish(node->data().publication->get_publisher_handle().get(),
+					const auto ret = rcl_publish(node->data().publication->get_publisher_handle().get(),
 								node->buffer().get(), nullptr);
+					if (ret != RCL_RET_OK) {
+						RCLCPP_WARN_ONCE(_node.get_logger(), "Failed to publish on topic '%s', version: %i",
+										node->data().topic_name.c_str(), node->data().version);
+					}
 				}
 			});
 

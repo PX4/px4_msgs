@@ -24,11 +24,17 @@ public:
 	static void fromOlder(const MessageOlder &msg_older, MessageNewer &msg_newer) {
 		// No change in message definition
 		static_assert(sizeof(msg_newer) == sizeof(msg_older));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
 		memcpy(&msg_newer, &msg_older, sizeof(msg_newer));
+#pragma GCC diagnostic pop
 	}
 
 	static void toOlder(const MessageNewer &msg_newer, MessageOlder &msg_older) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
 		memcpy(&msg_older, &msg_newer, sizeof(msg_newer));
+#pragma GCC diagnostic pop
 	}
 
 private:
