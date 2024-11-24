@@ -25,7 +25,7 @@ set(PX4_MSGS
 	"msg/VehicleCommand.msg"
 	"msg/VehicleLocalPosition.msg"
 	"msg/VehicleOdometry.msg"
-	"msg/VehicleGlobalPosition.msg"
+	"msg/SensorGps.msg"
 	"msg/VehicleAttitude.msg"
 	"msg/VehicleAttitudeSetpoint.msg"
 	"msg/VehicleTrajectoryWaypoint.msg"
@@ -34,6 +34,8 @@ set(PX4_MSGS
 	"msg/BatteryStatus.msg"
 	"msg/TrajectoryWaypoint.msg"
 	"msg/TrajectorySetpoint.msg"
+	"msg/EscStatus.msg"
+	"msg/EscReport.msg"
 )
 
 file(GLOB ROS_MSG_DIR_LIST "${MSGS_DIR}/*.msg")
