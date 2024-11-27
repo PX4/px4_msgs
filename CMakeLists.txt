@@ -36,6 +36,9 @@ set(PX4_MSGS
 	"msg/TrajectorySetpoint.msg"
 	"msg/EscStatus.msg"
 	"msg/EscReport.msg"
+
+	# user messages
+	"msg/OsdOverlay.msg"
 )
 
 file(GLOB ROS_MSG_DIR_LIST "${MSGS_DIR}/*.msg")
