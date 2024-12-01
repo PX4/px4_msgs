@@ -36,6 +36,7 @@ set(PX4_MSGS
 	"msg/TrajectorySetpoint.msg"
 	"msg/EscStatus.msg"
 	"msg/EscReport.msg"
+	"msg/RadarDetection.msg"
 
 	# user messages
 	"msg/OsdOverlay.msg"
