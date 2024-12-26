@@ -28,7 +28,7 @@ jobs:
           target-ros2-distro: ${{ matrix.ros2_distro }}
   
   noble:
-    name: "Build on Ubuntu Jammy"
+    name: "Build on Ubuntu Noble"
     runs-on: ubuntu-24.04
     strategy:
       matrix:
