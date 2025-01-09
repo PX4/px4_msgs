@@ -27,6 +27,7 @@ set(PX4_MSGS
 	"msg/VehicleOdometry.msg"
 	"msg/SensorGps.msg"
 	"msg/VehicleAttitude.msg"
+	"msg/VehicleAngularVelocity.msg"
 	"msg/VehicleAttitudeSetpoint.msg"
 	"msg/VehicleTrajectoryWaypoint.msg"
 	"msg/VehicleControlMode.msg"
