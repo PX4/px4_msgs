@@ -36,8 +36,10 @@ However, if you are using a custom PX4 version and you modified existing message
 - Copy all `*.msg` and  `*.srv` files from `PX4-Autopilot/msg/` and `PX4-Autopilot/srv/` in  `msg/` and  `srv/`, respectively. Assuming that this repository and the PX4-Autopilot repository are placed in your home folder, you can run:
   ```sh
   rm -f ~/px4_msgs/msg/*.msg
+  rm -f ~/px4_msgs/msg/versioned/*.msg
   rm -f ~/px4_msgs/srv/*.srv
   cp ~/PX4-Autopilot/msg/*.msg ~/px4_msgs/msg/
+  cp ~/PX4-Autopilot/msg/versioned/*.msg ~/px4_msgs/msg/versioned/
   cp ~/PX4-Autopilot/srv/*.srv ~/px4_msgs/srv/
   ```
 
