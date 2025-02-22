@@ -38,8 +38,10 @@ However, if you are using a custom PX4 version and you modified existing message
   rm -f ~/px4_msgs/msg/*.msg
   rm -f ~/px4_msgs/srv/*.srv
   cp ~/PX4-Autopilot/msg/*.msg ~/px4_msgs/msg/
+  cp ~/PX4-Autopilot/msg/versioned/*.msg ~/px4_msgs/msg/
   cp ~/PX4-Autopilot/srv/*.srv ~/px4_msgs/srv/
   ```
+**Note:** The ROS 2 message generation pipeline requires all messages to be directly under `msg/` and doesn't support sub-directories.
 
 ## Install, build and usage
 

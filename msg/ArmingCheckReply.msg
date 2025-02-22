@@ -1,10 +1,11 @@
+uint32 MESSAGE_VERSION = 0
+
 uint64 timestamp # time since system start (microseconds)
 
 uint8 request_id
 uint8 registration_id
 
 uint8 HEALTH_COMPONENT_INDEX_NONE = 0
-uint8 HEALTH_COMPONENT_INDEX_AVOIDANCE = 19
 
 uint8 health_component_index      # HEALTH_COMPONENT_INDEX_*
 bool health_component_is_present
