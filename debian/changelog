@@ -1,3 +1,9 @@
+ros-humble-clearbot-px4-msgs (2.1.0-0jammy) jammy; urgency=medium
+
+  * port to ROS 2 Humble / Ubuntu Jammy
+
+ -- naman <naman.more@clearbot.org>  Mon, 21 Jul 2025 16:29:51 +0530
+
 ros-foxy-clearbot-px4-msgs (2.1.0-0focal) focal; urgency=medium
 
   * use message for px4 v1.14

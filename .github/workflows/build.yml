@@ -7,14 +7,14 @@ on:
       - synchronize
   push:
     branches:
-      - "foxy"
+      - "humble"
 
 jobs:
   build-debian:
     runs-on: ARM64
-    container: ros:foxy
+    container: ros:humble
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           sudo apt -y update
           sudo apt install -y dh-make fakeroot
@@ -23,9 +23,9 @@ jobs:
       - name: Debian file
         id: deb-file-name
         run: |
-          cd .. && echo DEB_FILE="$(pwd)/$(find . -name "ros-foxy-clearbot-px4-msgs*.deb" | sed -r 's/^.{2}//')" >> "$GITHUB_OUTPUT"
+          cd .. && echo DEB_FILE="$(pwd)/$(find . -name "ros-humble-clearbot-px4-msgs*.deb" | sed -r 's/^.{2}//')" >> "$GITHUB_OUTPUT"
       - name: Export deb file artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: built deb file
           path: ${{ steps.deb-file-name.outputs.DEB_FILE }}
