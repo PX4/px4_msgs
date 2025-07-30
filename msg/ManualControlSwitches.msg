@@ -31,4 +31,6 @@ uint8 video_switch               # Photo trigger switch
 
 uint8 engage_main_motor_switch   # Engage the main motor (for helicopters)
 
+uint8 payload_power_switch       # Payload power switch
+
 uint32 switch_changes            # number of switch changes
