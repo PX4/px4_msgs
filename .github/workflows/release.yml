@@ -6,7 +6,7 @@ on:
 jobs:
   build-debian:
     runs-on: ARM64
-    container: ros:humble
+    container: asia-docker.pkg.dev/clearbot-360312/clearbot-public/ros:humble
     steps:
       - uses: actions/checkout@v4
       - run: |
