@@ -1,7 +1,7 @@
 Source: ros-humble-clearbot-px4-msgs
 Section: misc
 Priority: optional
-Maintainer: Nuno Marques <nuno.marques@dronesolutions.io>
+Maintainer: Utkarsh Goel <utkarsh@clearbot.org>
 Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-ament-lint-common <!nocheck>, ros-humble-builtin-interfaces, ros-humble-ros-environment, ros-humble-rosidl-default-generators
 Homepage:
 Standards-Version: 3.9.2
