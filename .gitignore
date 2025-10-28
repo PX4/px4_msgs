@@ -1,2 +1,5 @@
 build/
 msg/idl.cc
+out/
+debian/
+.ob*/
