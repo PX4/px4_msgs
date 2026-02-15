@@ -47,6 +47,34 @@ However, if you are using a custom PX4 version and you modified existing message
 
 Check [Using colcon to build packages](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#build-a-package) to understand how this can be built inside a workspace. Check the [PX4 ROS 2 User Guide](https://docs.px4.io/main/en/ros/ros2_comm.html) section on the PX4 documentation for further details on how this integrates PX4 and how to exchange messages with the autopilot.
 
+### Package
+
+You can also create a *.deb package of the colcon build, by using the bundled container image for building. This script pulls a copy of the `px4/px4_msgs-builder` container (source found in `./container/Dockerfile`). After a few minutes the script will create a directory `./out` where you will find the `*.deb` packages.
+
+```sh
+./scripts/build_deb.sh
+```
+
+## Container Builder
+
+If you want to replicate the build environment that PX4 is using in CI, you can build or pull a copy of the `px4io/px4_msgs-builder` container.
+
+### Building locally
+
+```sh
+# building the docker image
+docker build -t px4io/px4_msgs-builder:latest -f container/Dockerfile .
+```
+
+### Official Builds
+
+You can find the official container in docker hub.
+
+```sh
+# building the docker image
+docker pull px4io/px4_msgs-builder:latest
+```
+
 ## Bug tracking and feature requests
 
 Use the [Issues](https://github.com/PX4/px4_msgs/issues) section to create a new issue. Report your issue or feature request [here](https://github.com/PX4/px4_msgs/issues/new).
