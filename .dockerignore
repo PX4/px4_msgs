@@ -1,0 +1,10 @@
+build/
+install/
+log/
+CMakeCache.txt
+CMakeFiles/
+.colcon/
+*.egg-info
+.debbuild/
+.obj-*
+debian/
