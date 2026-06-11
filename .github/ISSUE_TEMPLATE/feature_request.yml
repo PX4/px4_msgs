@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest an improvement to the px4_msgs package infrastructure
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement!
+
+        **Note:** New or changed *message / service fields* must be proposed
+        against [PX4-Autopilot](https://github.com/PX4/PX4-Autopilot/issues),
+        since the definitions here are generated and synchronized from there.
+        Use this form for changes to the packaging, build, CI, or docs.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of the problem, e.g. "I'm always frustrated when [...]"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: Any alternative solutions or features you've considered.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here.

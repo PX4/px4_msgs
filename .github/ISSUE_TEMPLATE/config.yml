@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Message / service definition changes
+    url: https://github.com/PX4/PX4-Autopilot/issues
+    about: The *.msg and *.srv files are generated from PX4-Autopilot. Report field or message changes there.
+  - name: PX4 Discord (questions & troubleshooting)
+    url: https://discord.gg/dronecode
+    about: Ask usage questions and reach the PX4 development team.
+  - name: PX4 ROS 2 User Guide
+    url: https://docs.px4.io/main/en/ros/ros2_comm.html
+    about: Documentation on using px4_msgs to communicate with PX4 over ROS 2.
