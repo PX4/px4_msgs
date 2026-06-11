@@ -1,0 +1,92 @@
+name: Release to rosdistro (bloom)
+
+# Opens a release pull request against ros/rosdistro for each supported ROS 2
+# distribution whenever a GitHub release is published, automating the recurring
+# part of releasing px4_msgs onto the ROS build farm.
+#
+# Prerequisites (one-time setup, see CONTRIBUTING.md):
+#   1. Releases use a single release repository, PX4/px4_msgs-release. A
+#      maintainer must seed a bloom track for each current distro (humble, jazzy,
+#      kilted, rolling) once with an interactive `bloom-release` (devel_branch
+#      main). That first run also adds the `release:` block for px4_msgs to
+#      ros/rosdistro (it currently has only `source:`/`doc:`). After that, this
+#      workflow automates subsequent releases. (The legacy PX4/px4_msgs2-release
+#      has been archived in favour of the single PX4/px4_msgs-release.)
+#   2. A repository secret `BLOOM_GITHUB_TOKEN` must be set to a token that can
+#      push to PX4/px4_msgs-release and open a pull request on ros/rosdistro
+#      (typically a fine-grained PAT or a bot account token).
+#
+# Until those are configured the job exits successfully without doing anything,
+# so it never blocks a release.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      ros_distro:
+        description: "Single ROS 2 distribution to release (blank = all supported)"
+        required: false
+        default: ""
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  bloom-release:
+    name: "bloom-release (${{ matrix.ros2_distro }})"
+    runs-on: ubuntu-latest
+    container:
+      image: ros:rolling-ros-core
+    strategy:
+      fail-fast: false
+      matrix:
+        ros2_distro: [humble, jazzy, kilted, rolling, lyrical]
+    steps:
+      - name: Check release automation is configured
+        id: guard
+        env:
+          BLOOM_GITHUB_TOKEN: ${{ secrets.BLOOM_GITHUB_TOKEN }}
+        run: |
+          if [ -z "${BLOOM_GITHUB_TOKEN}" ]; then
+            echo "BLOOM_GITHUB_TOKEN is not set; skipping bloom release." >&2
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip distribution not requested
+        id: select
+        if: steps.guard.outputs.enabled == 'true'
+        run: |
+          requested="${{ github.event.inputs.ros_distro }}"
+          if [ -n "${requested}" ] && [ "${requested}" != "${{ matrix.ros2_distro }}" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install bloom
+        if: steps.guard.outputs.enabled == 'true' && steps.select.outputs.run == 'true'
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends python3-bloom git ca-certificates
+
+      - name: Configure git identity
+        if: steps.guard.outputs.enabled == 'true' && steps.select.outputs.run == 'true'
+        run: |
+          git config --global user.name "PX4 BuildBot"
+          git config --global user.email "bot@px4.io"
+
+      - name: Open rosdistro release pull request
+        if: steps.guard.outputs.enabled == 'true' && steps.select.outputs.run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.BLOOM_GITHUB_TOKEN }}
+        run: |
+          # The track + the rosdistro release block must already be seeded for
+          # this distro (see header). This automates subsequent releases.
+          bloom-release \
+            --rosdistro "${{ matrix.ros2_distro }}" \
+            --track "${{ matrix.ros2_distro }}" \
+            --non-interactive \
+            px4_msgs

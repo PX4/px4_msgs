@@ -1,0 +1,92 @@
+name: Create GitHub release
+
+# Turns the message-sync activity coming from the upstream PX4 bot into a
+# GitHub release, which in turn drives the packaging (.deb) and rosdistro
+# (bloom) release workflows.
+#
+# Triggers:
+#   * a version tag `vX.Y.Z` is pushed, or
+#   * a `release/**` branch is pushed and its package.xml version does not yet
+#     have a matching `vX.Y.Z` tag (i.e. the release line was just bumped).
+#
+# NOTE: to let the published release cascade into the `Package (.deb)` and
+# `Release to rosdistro (bloom)` workflows, set a `RELEASE_TOKEN` secret to a
+# PAT. Releases created with the default GITHUB_TOKEN do not trigger further
+# workflows. If `RELEASE_TOKEN` is absent the release is still created with the
+# default token (without the cascade).
+on:
+  push:
+    branches:
+      - 'release/**'
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine release tag
+        id: ver
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            tag="${GITHUB_REF#refs/tags/}"
+          else
+            version="$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' package.xml | head -n1)"
+            if [ -z "${version}" ]; then
+              echo "Could not read version from package.xml" >&2
+              exit 1
+            fi
+            tag="v${version}"
+          fi
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "Release tag: ${tag}"
+
+      - name: Skip if release already exists
+        id: exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ steps.ver.outputs.tag }}" >/dev/null 2>&1; then
+            echo "Release ${{ steps.ver.outputs.tag }} already exists; nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create tag for release branch bump
+        if: steps.exists.outputs.skip == 'false' && startsWith(github.ref, 'refs/heads/')
+        run: |
+          tag="${{ steps.ver.outputs.tag }}"
+          if ! git rev-parse "${tag}" >/dev/null 2>&1; then
+            git tag "${tag}"
+            git push origin "${tag}"
+          fi
+
+      - name: Generate release notes from message diff
+        if: steps.exists.outputs.skip == 'false'
+        run: |
+          tag="${{ steps.ver.outputs.tag }}"
+          ./scripts/generate_release_notes.sh "${tag}" > notes.md || true
+          if [ ! -s notes.md ]; then
+            echo "Automated release of px4_msgs ${tag}." > notes.md
+          fi
+
+      - name: Create GitHub release
+        if: steps.exists.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || github.token }}
+        run: |
+          tag="${{ steps.ver.outputs.tag }}"
+          gh release create "${tag}" \
+            --title "${tag}" \
+            --notes-file notes.md \
+            --target "${GITHUB_SHA}"
