@@ -1,0 +1,67 @@
+# See https://pre-commit.com for more information.
+# Run `pre-commit install` to set up the git hook, or `pre-commit run --all-files`.
+#
+# NOTE: the message/service definitions (*.msg, *.srv) are generated and
+# synchronized from PX4-Autopilot, so they are excluded from formatting hooks.
+exclude: '^(msg|srv)/.*\.(msg|srv)$'
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Whitespace / EOL hygiene.
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      # Repository hygiene.
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      # Scripts must have shebangs and be executable (and vice versa).
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      # Structured-file syntax: package.xml, CMake-adjacent yaml, configs.
+      - id: check-xml
+      - id: check-yaml
+      - id: check-json
+
+  # Validate the GitHub Actions workflows and the Dependabot config.
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.31.2
+    hooks:
+      - id: check-github-workflows
+      - id: check-dependabot
+
+  # Lint the shell helper scripts (containerized .deb build, generators).
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+
+  # Spell-check documentation and tooling (generated CHANGELOG is excluded).
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        # "ned" = NED frame; "ot" is a false positive from a [Bb]ot regex split.
+        args: ["--ignore-words-list=ned,ot"]
+        exclude: '^CHANGELOG\.rst$'
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.44.0
+    hooks:
+      - id: markdownlint
+        args: ["--disable", "MD013", "MD033", "MD041"]
+
+  # Build-farm gate: validate package.xml exactly as bloom/catkin_pkg does, so a
+  # manifest that would fail to release is caught before it reaches the farm.
+  - repo: local
+    hooks:
+      - id: validate-package-xml
+        name: validate package.xml (catkin_pkg)
+        entry: python3 -c "import sys; from catkin_pkg.package import parse_package; [parse_package(f).validate() for f in sys.argv[1:]]"
+        language: python
+        additional_dependencies: [catkin_pkg]
+        files: '(^|/)package\.xml$'
