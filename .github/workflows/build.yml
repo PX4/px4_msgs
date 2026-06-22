@@ -43,7 +43,7 @@ jobs:
       # Compile the generated message sources through ccache (restored below).
       CCACHE_DIR: ${{ github.workspace }}/.ccache
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Restore ccache
         uses: actions/cache@v5
         with:
@@ -144,7 +144,7 @@ jobs:
     env:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Restore ccache
         uses: actions/cache@v5
         with:
@@ -190,7 +190,7 @@ jobs:
         # neither is compatible with the 3.11 that ros-tooling requires.
         ros2_distro: [jazzy]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Pin Python 3.11 to match Jazzy's Windows binaries and avoid ros-tooling's
       # setuptools<60 / missing-distutils breakage on Python 3.12.
       - uses: actions/setup-python@v6
@@ -222,7 +222,7 @@ jobs:
       run:
         shell: bash -el {0}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           path: src/px4_msgs
       - uses: mamba-org/setup-micromamba@v3
@@ -263,7 +263,7 @@ jobs:
     name: "Lint (pre-commit)"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
