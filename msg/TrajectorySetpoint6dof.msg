@@ -1,5 +1,5 @@
 # Trajectory setpoint in NED frame
-# Input to position controller.
+# Input to the fully actuated Voliro position and attitude controller.
 
 uint64 timestamp # time since system start (microseconds)
 
@@ -9,5 +9,6 @@ float32[3] velocity               # in meters/second
 float32[3] acceleration           # in meters/second^2
 float32[3] jerk                   # in meters/second^3 (for logging only)
 
-float32[4] quaternion             # unit quaternion
-float32[3] angular_velocity       # angular velocity in radians/second
+# Body FRD attitude and motion
+float32[4] quaternion             # unit quaternion, w x y z, body FRD to NED
+float32[3] angular_velocity       # desired body angular velocity in radians/second
