@@ -53,7 +53,9 @@ repos:
     rev: v0.44.0
     hooks:
       - id: markdownlint
-        args: ["--disable", "MD013", "MD033", "MD041"]
+        # "--" ends the --disable list, so the file names pre-commit appends are
+        # linted instead of being read as more rule names.
+        args: ["--disable", "MD013", "MD033", "MD041", "--"]
 
   # Build-farm gate: validate package.xml exactly as bloom/catkin_pkg does, so a
   # manifest that would fail to release is caught before it reaches the farm.
