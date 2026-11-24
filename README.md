@@ -84,6 +84,7 @@ px4_msgs/
 | PX4 release             | px4_msgs branch                                                     |
 |-------------------------|--------------------------------------------------------------------|
 | `main` (in development) | [`main`](https://github.com/PX4/px4_msgs)                          |
+| v1.18                   | [`release/1.18`](https://github.com/PX4/px4_msgs/tree/release/1.18) |
 | v1.17                   | [`release/1.17`](https://github.com/PX4/px4_msgs/tree/release/1.17) |
 | v1.16                   | [`release/1.16`](https://github.com/PX4/px4_msgs/tree/release/1.16) |
 | v1.15                   | [`release/1.15`](https://github.com/PX4/px4_msgs/tree/release/1.15) |
