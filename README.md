@@ -114,6 +114,7 @@ This package is **generated, not hand-written** — keep these PX4-specific poin
 - **Automatic sync.** When the uORB definitions change on PX4-Autopilot `main`, a [CI pipeline](https://github.com/PX4/PX4-Autopilot/blob/main/.github/workflows/metadata.yml) pushes the updated definitions here, so `main` stays in lock-step with PX4-Autopilot `main`.
 - **Flat layout requirement.** The ROS 2 generation pipeline requires every definition to live **directly** under `msg/` (no sub-directories) — PX4's `msg/versioned/` files are flattened into `msg/` during the sync.
 - **Manual sync** (only needed for a custom/detached PX4 version): check out the branch for the PX4 version you forked from, then refresh the definitions:
+
   ```sh
   rm -f msg/*.msg srv/*.srv
   cp ~/PX4-Autopilot/msg/*.msg msg/

@@ -17,15 +17,19 @@ Changes to the packaging, build system, CI, or documentation **are** welcome her
 1. Fork the repository and create a topic branch off `main`.
 2. Make your changes and update the [`CHANGELOG.rst`](CHANGELOG.rst) when appropriate.
 3. Ensure the package still builds and tests pass:
+
    ```sh
    colcon build --packages-select px4_msgs
    colcon test --packages-select px4_msgs
    ```
+
 4. (Optional but recommended) install and run [`pre-commit`](https://pre-commit.com):
+
    ```sh
    pre-commit install
    pre-commit run --all-files
    ```
+
 5. Open a pull request, filling in the [pull request template](.github/PULL_REQUEST_TEMPLATE.md).
 
 ### Commit conventions
@@ -54,6 +58,7 @@ These steps must be done once by a maintainer before the automation is fully ope
   ```sh
   bloom-release --rosdistro jazzy --new-track px4_msgs
   ```
+
 - That first run also opens the pull request that adds the `release:` block for `px4_msgs` to [`ros/rosdistro`](https://github.com/ros/rosdistro) (today it has only `source:`/`doc:`, so the package is not yet built as binaries on the farm). After the tracks and the `release:` block exist, the [`Release to rosdistro (bloom)`](.github/workflows/release.yml) workflow automates subsequent releases.
 - Add a `BLOOM_GITHUB_TOKEN` repository secret: a token that can push to `PX4/px4_msgs-release` and open a pull request on `ros/rosdistro`.
 - Add a `RELEASE_TOKEN` repository secret (a PAT) so that releases created by the automation cascade into the packaging and bloom workflows. Releases created with the default `GITHUB_TOKEN` do not trigger downstream workflows.
