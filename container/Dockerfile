@@ -1,6 +1,6 @@
 # Builder image for generating px4_msgs Debian packages with bloom.
 # The ROS 2 distribution is selectable so packages can be produced for every
-# distribution on the build farm (humble, jazzy, kilted, rolling, ...).
+# distribution on the build farm (humble, jazzy, rolling, ...).
 ARG ROS_DISTRO=humble
 FROM ros:${ROS_DISTRO}-ros-core
 

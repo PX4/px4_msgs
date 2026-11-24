@@ -12,7 +12,7 @@ set -euo pipefail
 # Debian packaging is Debian/Ubuntu specific. The OS name defaults to ubuntu
 # and the OS version is auto-detected by bloom from the base image, so each
 # ROS 2 distribution is packaged for its matching Ubuntu release (jammy for
-# humble, noble for jazzy/kilted/rolling, ...).
+# humble, noble for jazzy/rolling, ...).
 OS_NAME="${OS_NAME:-ubuntu}"
 
 echo "[*] Building px4_msgs Debian package for ROS 2 ${ROS_DISTRO} (${OS_NAME})"

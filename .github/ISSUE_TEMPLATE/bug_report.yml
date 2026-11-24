@@ -41,7 +41,7 @@ body:
     id: ros-distro
     attributes:
       label: ROS 2 distribution
-      placeholder: "e.g. Humble, Jazzy, Kilted, Rolling"
+      placeholder: "e.g. Humble, Jazzy, Lyrical, Rolling"
     validations:
       required: true
   - type: input

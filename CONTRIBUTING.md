@@ -50,7 +50,7 @@ The in-repo [`CHANGELOG.rst`](CHANGELOG.rst) can be regenerated from the tag his
 
 These steps must be done once by a maintainer before the automation is fully operational:
 
-- Releases use a single release repository, [`PX4/px4_msgs-release`](https://github.com/PX4/px4_msgs-release). (The separate `PX4/px4_msgs2-release` was a ROS 2-only split; it has been archived in favour of the single `px4_msgs-release` and is not referenced by any current ROS distribution.) Seed a bloom track for each current distribution (`humble`, `jazzy`, `kilted`, `rolling`) once with an interactive `bloom-release` using `main` as the upstream devel branch, e.g.:
+- Releases use a single release repository, [`PX4/px4_msgs-release`](https://github.com/PX4/px4_msgs-release). (The separate `PX4/px4_msgs2-release` was a ROS 2-only split; it has been archived in favour of the single `px4_msgs-release` and is not referenced by any current ROS distribution.) Seed a bloom track for each current distribution (`humble`, `jazzy`, `rolling`) once with an interactive `bloom-release` using `main` as the upstream devel branch, e.g.:
   ```sh
   bloom-release --rosdistro jazzy --new-track px4_msgs
   ```

@@ -6,7 +6,7 @@
 [![Latest release](https://img.shields.io/github/v/release/PX4/px4_msgs?logo=github&label=release&color=blue)](https://github.com/PX4/px4_msgs/releases/latest)
 [![Last commit](https://img.shields.io/github/last-commit/PX4/px4_msgs/main?logo=git&logoColor=white)](https://github.com/PX4/px4_msgs/commits/main)
 <!-- ecosystem -->
-[![ROS 2](https://img.shields.io/badge/ROS%202-Humble%20%7C%20Jazzy%20%7C%20Kilted%20%7C%20Rolling%20%7C%20Lyrical-22314E?logo=ros&logoColor=white)](https://index.ros.org/p/px4_msgs/)
+[![ROS 2](https://img.shields.io/badge/ROS%202-Humble%20%7C%20Jazzy%20%7C%20Rolling%20%7C%20Lyrical-22314E?logo=ros&logoColor=white)](https://index.ros.org/p/px4_msgs/)
 [![REP-2004 Quality Level 3](https://img.shields.io/badge/Quality%20Level-3-yellowgreen)](QUALITY_DECLARATION.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://www.conventionalcommits.org)
 [![License: BSD-3-Clause](https://img.shields.io/github/license/PX4/px4_msgs?color=brightgreen)](https://github.com/PX4/px4_msgs/blob/main/LICENSE)
@@ -31,7 +31,7 @@ Clone the branch that matches your PX4 version (see [Supported versions](#suppor
 mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
 git clone https://github.com/PX4/px4_msgs.git
 cd ~/ros2_ws
-source /opt/ros/jazzy/setup.bash      # or humble / kilted / rolling
+source /opt/ros/jazzy/setup.bash      # or humble / rolling
 colcon build --packages-select px4_msgs
 ```
 
@@ -92,15 +92,15 @@ px4_msgs/
 
 ### ROS 2 distribution → Ubuntu
 
-The ROS 2 distribution fixes the Ubuntu version ([REP 2000](https://www.ros.org/reps/rep-2000.html)). CI builds `main` against every maintained distribution:
+The ROS 2 distribution fixes the Ubuntu version ([REP 2000](https://www.ros.org/reps/rep-2000.html)). CI builds `main` against the LTS distributions and Rolling:
 
 | ROS 2 distribution | Ubuntu             | Type                | Built in CI                                                  |
 |--------------------|--------------------|---------------------|-------------------------------------------------------------|
 | Humble             | 22.04 (Jammy)      | LTS, until 2027     | yes, native runner                                          |
 | Jazzy              | 24.04 (Noble)      | LTS, until 2029     | yes, native runner                                          |
-| Kilted             | 24.04 (Noble)      | non-LTS, until 2026 | yes, native runner                                          |
 | Rolling            | 24.04 (Noble)      | development         | yes, native runner                                          |
 | Lyrical            | 26.04 (Resolute)   | LTS                 | yes, in the `ros:lyrical` container (no 26.04 runner yet)   |
+| Kilted             | 24.04 (Noble)      | non-LTS, until 2026 | no                                                          |
 | Foxy               | 20.04 (Focal)      | EOL since 2023      | no                                                          |
 
 The definitions use only basic message features (built in types, fixed size arrays, nested messages), so any branch also builds on the older distributions if you still need them; the `release/*` branches were originally tested on Foxy, Humble and Rolling. Windows (Jazzy) and macOS (Jazzy, via [RoboStack](https://robostack.github.io/)) are covered by CI as well.

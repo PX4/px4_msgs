@@ -7,7 +7,7 @@ name: Release to rosdistro (bloom)
 # Prerequisites (one-time setup, see CONTRIBUTING.md):
 #   1. Releases use a single release repository, PX4/px4_msgs-release. A
 #      maintainer must seed a bloom track for each current distro (humble, jazzy,
-#      kilted, rolling) once with an interactive `bloom-release` (devel_branch
+#      rolling) once with an interactive `bloom-release` (devel_branch
 #      main). That first run also adds the `release:` block for px4_msgs to
 #      ros/rosdistro (it currently has only `source:`/`doc:`). After that, this
 #      workflow automates subsequent releases. (The legacy PX4/px4_msgs2-release
@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ros2_distro: [humble, jazzy, kilted, rolling, lyrical]
+        ros2_distro: [humble, jazzy, rolling, lyrical]
     steps:
       - name: Check release automation is configured
         id: guard

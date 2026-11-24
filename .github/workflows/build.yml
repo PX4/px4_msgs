@@ -35,13 +35,21 @@ jobs:
             os: ubuntu-22.04
           - ros2_distro: jazzy
             os: ubuntu-24.04
-          - ros2_distro: kilted
-            os: ubuntu-24.04
           - ros2_distro: rolling
             os: ubuntu-24.04
     env:
       # Compile the generated message sources through ccache (restored below).
       CCACHE_DIR: ${{ github.workspace }}/.ccache
+      # The GitHub runners ship PowerShell and set PSModulePath, which makes
+      # colcon capture each package's build and test environment through its
+      # PowerShell extension. That path parses a randomly ordered NAME=value
+      # dump line by line and reads a name that is not a plain identifier, like
+      # the INPUT_PACKAGE-NAME variable every action input creates, as a
+      # continuation of the variable before it. When that variable is
+      # PYTHONPATH or AMENT_PREFIX_PATH the build fails with "No module named
+      # ament_package / rosidl_adapter / ament_cmake_test" or "No
+      # 'rosidl_typesupport_c' found". Block the extension so colcon uses sh.
+      COLCON_EXTENSION_BLOCKLIST: colcon_core.shell.powershell
     steps:
       - uses: actions/checkout@v7
       - name: Restore ccache
@@ -172,40 +180,59 @@ jobs:
           package-name: px4_msgs
           target-ros2-distro: lyrical
 
+  # Windows gets ROS 2 from RoboStack (ROS 2 packaged on conda-forge), like the
+  # macOS job below, instead of ros-tooling/setup-ros. setup-ros installs wget,
+  # 7zip, lcov, cppcheck and openssl from the Chocolatey community feed on every
+  # run, and that feed regularly answers 503/504. wretry cannot wrap the step on
+  # Windows: it injects the GitHub context as INPUT_GITHUB_CONTEXT, which exceeds
+  # the environment variable length limit and breaks the Chocolatey installs.
   build-windows:
-    name: "Build & test (${{ matrix.ros2_distro }} / Windows)"
-    # Pinned to windows-2022 on purpose: action-ros-ci@v0.4 wraps every command
-    # in `call "...\Microsoft Visual Studio\2022\Enterprise\...\vcvars64.bat"`,
-    # a hardcoded path. windows-latest has rolled to windows-2025 (Visual Studio
-    # 2026), where that path does not exist, so every action-ros-ci command fails
-    # instantly. windows-2022 ships VS 2022 Enterprise at the expected location.
+    name: "Build & test (jazzy / Windows, RoboStack)"
+    # Pinned to windows-2022 on purpose: the conda-forge compiler package
+    # (vs2022_win-64) activates the Visual Studio 2022 toolchain of the runner,
+    # and windows-latest has rolled to windows-2025 (Visual Studio 2026).
     runs-on: windows-2022
-    strategy:
-      fail-fast: false
-      matrix:
-        # Windows coverage targets Jazzy only. ros-tooling pins setuptools<60,
-        # which has no distutils on Python 3.12, so the stack must run on Python
-        # 3.11 (see setup-python below). Jazzy's Windows binaries are built for
-        # 3.11 and work; Humble's target 3.8 and Rolling's target 3.12, so
-        # neither is compatible with the 3.11 that ros-tooling requires.
-        ros2_distro: [jazzy]
+    defaults:
+      run:
+        # micromamba activates the environment through cmd's AutoRun hook, which
+        # the default cmd shell skips (/D). The conda-forge compiler activation
+        # is a .bat script, so the build has to run in cmd.
+        shell: cmd /C call {0}
     steps:
       - uses: actions/checkout@v7
-      # Pin Python 3.11 to match Jazzy's Windows binaries and avoid ros-tooling's
-      # setuptools<60 / missing-distutils breakage on Python 3.12.
-      - uses: actions/setup-python@v7
         with:
-          python-version: '3.11'
-      # NOTE: not wrapped in a retry action here. wretry injects the GitHub
-      # context as INPUT_GITHUB_CONTEXT, which exceeds the Windows environment
-      # variable length limit and breaks setup-ros's chocolatey installs.
-      - uses: ros-tooling/setup-ros@v0.7
+          path: src/px4_msgs
+      - uses: mamba-org/setup-micromamba@v3
         with:
-          required-ros-distributions: ${{ matrix.ros2_distro }}
-      - uses: ros-tooling/action-ros-ci@v0.4
-        with:
-          package-name: px4_msgs
-          target-ros2-distro: ${{ matrix.ros2_distro }}
+          environment-name: ros_jazzy
+          init-shell: cmd.exe
+          # Cache the solved/downloaded conda environment so re-runs skip the
+          # (slow) solve + download of ros-jazzy-ros-base.
+          cache-environment: true
+          cache-downloads: true
+          condarc: |
+            channels:
+              - conda-forge
+              - robostack-jazzy
+          create-args: >-
+            python=3.11
+            ros-jazzy-ros-base
+            ros-jazzy-ament-cmake
+            ros-jazzy-rosidl-default-generators
+            ros-jazzy-builtin-interfaces
+            ros-jazzy-ament-lint-auto
+            ros-jazzy-ament-lint-common
+            colcon-common-extensions
+            cmake
+            c-compiler
+            cxx-compiler
+      - name: Build
+        run: colcon build --packages-select px4_msgs --event-handlers console_cohesion+
+      - name: Test
+        # ament_xmllint is excluded for the same reason as on macOS: conda-forge's
+        # libxml2 has no HTTP support, so it cannot fetch the package.xml schema.
+        # xmllint still runs on the Ubuntu jobs.
+        run: colcon test --packages-select px4_msgs --event-handlers console_cohesion+ --return-code-on-test-failure --ctest-args -E xmllint
 
   # ROS 2 no longer publishes macOS Homebrew bottles, so macOS is built via
   # RoboStack (ROS 2 packaged on conda-forge), which provides binaries for
