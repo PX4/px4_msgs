@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>px4_msgs</name>
-  <version>1.17.0</version>
+  <version>1.18.0</version>
   <description>Package with the ROS-equivalent of PX4 uORB msgs</description>
   <maintainer email="nuno.marques@dronesolutions.io">Nuno Marques</maintainer>
   <maintainer email="beniamino.pozzan@gmail.com">Beniamino Pozzan</maintainer>
