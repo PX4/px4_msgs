@@ -35,8 +35,6 @@ jobs:
             os: ubuntu-22.04
           - ros2_distro: jazzy
             os: ubuntu-24.04
-          - ros2_distro: kilted
-            os: ubuntu-24.04
           - ros2_distro: rolling
             os: ubuntu-24.04
     env:
