@@ -42,6 +42,16 @@ jobs:
     env:
       # Compile the generated message sources through ccache (restored below).
       CCACHE_DIR: ${{ github.workspace }}/.ccache
+      # The GitHub runners ship PowerShell and set PSModulePath, which makes
+      # colcon capture each package's build and test environment through its
+      # PowerShell extension. That path parses a randomly ordered NAME=value
+      # dump line by line and reads a name that is not a plain identifier, like
+      # the INPUT_PACKAGE-NAME variable every action input creates, as a
+      # continuation of the variable before it. When that variable is
+      # PYTHONPATH or AMENT_PREFIX_PATH the build fails with "No module named
+      # ament_package / rosidl_adapter / ament_cmake_test" or "No
+      # 'rosidl_typesupport_c' found". Block the extension so colcon uses sh.
+      COLCON_EXTENSION_BLOCKLIST: colcon_core.shell.powershell
     steps:
       - uses: actions/checkout@v7
       - name: Restore ccache
